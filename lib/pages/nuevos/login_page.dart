@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:bogo_u/models/login_Form.dart';
+import 'package:bogo_u/ui/uis.dart';
 import 'package:provider/provider.dart';
+import 'package:bogo_u/widgets/widgets.dart';
 import 'package:bogo_u/models/models.dart';
 import 'package:bogo_u/services/services.dart';
-import 'package:bogo_u/ui/uis.dart';
-import 'package:bogo_u/widgets/widgets.dart';
 
-class RegisterPage extends StatelessWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,29 +41,27 @@ class RegisterPage extends StatelessWidget {
                   children: [
                     SizedBox(height: 30,),
                     Text(
-                      'Crear una cuenta',
-                      style: Theme.of(context).textTheme.headline4,
+                      'Bienvenido',
+                      style: Theme.of(context).textTheme.headline3,
                     ),
                     SizedBox(height: 30),
                     ChangeNotifierProvider(
                       // este objeto se crea y va a estar alojado en el _loginForm() y a la vez puede redibujar los Widgets necesarios
-                      create: (_) => LoginFormProvider(),
+                      create: (_) {},
                       child: _LoginForm(),
-                    )
+                    ),
                   ],
                 )
               ),
-              SizedBox(
-                height: 50,
-              ),
+              SizedBox(height: 35,),
               TextButton(
                 style: ButtonStyle(
                   overlayColor:
-                      MaterialStateProperty.all(Colors.indigo.withOpacity(0.1)),
+                      MaterialStateProperty.all(Colors.grey.withOpacity(0.1)),
                   shape: MaterialStateProperty.all(StadiumBorder()),
                 ),
-                onPressed: () => Navigator.popAndPushNamed(context, 'login'),
-                child: Text('Ya tienes cuenta?',
+                onPressed: () => Navigator.popAndPushNamed(context, 'register'),
+                child: Text('Crear una nueva cuenta',
                     style: TextStyle(fontSize: 17, color: Colors.black87)),
               ),
               SizedBox(
@@ -72,6 +73,7 @@ class RegisterPage extends StatelessWidget {
       ),
     );
   }
+
 }
 
 class _LoginForm extends StatelessWidget {
@@ -87,10 +89,10 @@ class _LoginForm extends StatelessWidget {
             autocorrect: false,
             keyboardType: TextInputType.emailAddress,
             decoration: InputDecorations.authInputDecoration(
-                labelText: 'Correo electrónico',
+                labelText: 'Correo electronico',
                 prefix: Icons.alternate_email,
                 hintText: 'correo@gmail.com'),
-            onChanged: (value) => loginForm.email = value,
+            onChanged: (value) => loginForm.correo = value,
             validator: (value) {
               //Return null cuando es aceptada la expresion escrita.
               String pattern =
@@ -109,7 +111,7 @@ class _LoginForm extends StatelessWidget {
                 labelText: 'Contraseña',
                 prefix: Icons.lock_outline,
                 hintText: '*****'),
-            onChanged: (value) => loginForm.password = value,
+            onChanged: (value) => loginForm.contrasena = value,
             validator: (value) {
               if (value != null && value.length >= 6) return null;
               return 'La contraseña debe contener mínimo 6 caracteres';
@@ -120,39 +122,37 @@ class _LoginForm extends StatelessWidget {
             height: 30,
           ),
           MaterialButton(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(2)
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(2)
+            ),
+            disabledColor: Colors.grey,
+            elevation: 0,
+            color: Color.fromARGB(255, 53, 52, 56),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 182, vertical: 15),
+              child: Text(
+                loginForm.isLoading ? 'Espere' : 'Ingresar',
+                style: TextStyle(color: Colors.white,),              
               ),
-              disabledColor: Colors.grey,
-              elevation: 0,
-              color: Color.fromARGB(255, 53, 52, 56),
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 182, vertical: 15),
-                child: Text(
-                  loginForm.isLoading ? 'Espere' : 'Crear',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              onPressed: loginForm.isLoading
-                  ? null
-                  : () async {
-                      FocusScope.of(context).unfocus(); //inhabilita el teclado
-                      final authService =
-                          Provider.of<AuthService>(context, listen: false);
-                      if (!loginForm.isValidForm())
-                        return; // si no es valido retorna
-                      loginForm.isLoading = true;
-                      //await Future.delayed(Duration(seconds: 2));
-                      final String? errorMessage = await authService.createUser(
-                          loginForm.email, loginForm.password);
-                      if (errorMessage == null) {
-                        Navigator.pushReplacementNamed(context, 'principal');
-                      } else {
-                        print(errorMessage);
-                        loginForm.isLoading = false;
-                      }
-                    }),
-          //SizedBox(height: 30,),
+            ),
+            onPressed: loginForm.isLoading
+              ? null
+              : () async {
+                  FocusScope.of(context).unfocus(); //inhabilita el teclado
+                  final authService = Provider.of<AuthService>(context,listen: false);
+                  if (!loginForm.isValidForm()) return; // si no es valido retorna
+                  loginForm.isLoading = true;
+                  final String? errorMessage = await  authService.login(
+                    loginForm.email, loginForm.password
+                  );
+                  
+                  if (errorMessage == null) {
+                    Navigator.pushNamed(context, 'principal');
+                  } else {
+                    print(errorMessage);
+                  }
+                  loginForm.isLoading = false;
+                }),
         ],
       ),
     );

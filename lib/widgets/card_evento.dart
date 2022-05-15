@@ -23,7 +23,7 @@ class CardEvento extends StatelessWidget {
           alignment: Alignment.bottomLeft,
           children: [
           _BackgroundImage(evento.imagen),
-          _ProductoDetails(
+          _EventoDetails(
             nombreEvento: evento.nombre,
             valorEvento: evento.lugar,
             FechaEvento: evento.dias + ' de ' + evento.mes + ' del ' + evento.anual,
@@ -48,13 +48,13 @@ class CardEvento extends StatelessWidget {
   }
 }
 
-class _ProductoDetails extends StatelessWidget {
+class _EventoDetails extends StatelessWidget {
   
   final String nombreEvento;
   final String valorEvento;
   final String FechaEvento;
 
-  const _ProductoDetails({
+  const _EventoDetails({
     Key? key,
     required this.nombreEvento,
     required this.valorEvento,

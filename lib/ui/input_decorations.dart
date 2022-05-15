@@ -10,22 +10,21 @@ class InputDecorations {
       enabledBorder: UnderlineInputBorder(
         borderSide: BorderSide(
           // Barra inferior de texto
-          color: Colors.grey,
+          color: Colors.white, // Color de la barra inferior del texto
         ),
       ),
       focusedBorder: UnderlineInputBorder(
         borderSide: BorderSide(
-          // 
-          color: Colors.grey,
+          color: Colors.white, //
         ),
       ),
       hintText: hintText,
       labelText: labelText,
       labelStyle: TextStyle(
         // 
-        color: Colors.black,
+        color: Colors.white, // Color del fraseo del texto
       ),
-      prefixIcon: prefix != null? Icon(prefix, color:Colors.black):null,
+      prefixIcon: prefix != null? Icon(prefix, color:Colors.white):null, // Color del icono
     );
   }
 
