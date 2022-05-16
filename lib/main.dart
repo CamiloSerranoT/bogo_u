@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
         title: 'Bogo_U',
         debugShowCheckedModeBanner: false,
-        initialRoute: 'checking',
+        initialRoute: 'principal',
         routes: {
           'login': ( _ ) => LoginPage(),
           'principal': ( _ ) => principalPage(),

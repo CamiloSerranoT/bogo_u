@@ -116,7 +116,7 @@ class _ContainerTextClave extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
         autocorrect: false,
-        keyboardType: TextInputType.emailAddress,
+        obscureText: true,
         style: const TextStyle(fontSize: 20,color: Colors.white,),
         decoration: InputDecorations.authInputDecorationGeneral(
             labelText: 'Contraseña',

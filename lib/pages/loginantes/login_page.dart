@@ -3,10 +3,97 @@ import 'package:bogo_u/services/services.dart';
 import 'package:bogo_u/ui/uis.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+class LoginPage extends StatelessWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
-class LoginFormatPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Colors.black,
+                Color.fromARGB(255, 105, 16, 10),
+                Color.fromARGB(255, 243, 115, 105)
+              ],
+            ),
+          ),
+        ),
+        title: Text('Bogo_U'),
+        titleTextStyle: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
+        backgroundColor: Colors.transparent,
+        centerTitle: true,
+      ),
+      body: Container(
+        child: SingleChildScrollView(
+          //Hace scroll si sus hijos sobre pasan el tamaño de la pantalla
+          child: Column(
+            children: [
+              SizedBox(height: 80,),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                child: Container(
+                  margin: EdgeInsets.only(top: 20, bottom: 5),
+                  width: double.infinity,
+                  //height: 400,
+                  decoration: _cardBorders(),
+                  child: Container(
+                    alignment: Alignment.bottomLeft,
+                    child: Column(
+                      children: [
+                        ChangeNotifierProvider(
+                          create: (_) {},
+                          child: _LoginFormatPage(),
+                        ),
+                      ]
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 35,),
+              TextButton(
+                style: ButtonStyle(
+                  overlayColor:
+                      MaterialStateProperty.all(Colors.grey.withOpacity(0.1)),
+                  shape: MaterialStateProperty.all(StadiumBorder()),
+                ),
+                onPressed: () => Navigator.popAndPushNamed(context, 'register'),
+                child: Text('Crear una nueva cuenta',
+                    style: TextStyle(fontSize: 17, color: Colors.black87)
+                ),
+              ),         
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
-  const LoginFormatPage({
+  BoxDecoration _cardBorders() {
+    return BoxDecoration(
+      color: Colors.black,
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(40),
+        bottomRight: Radius.circular(40),
+        topRight: Radius.circular(40),
+        bottomLeft: Radius.circular(40)
+      ),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.50),
+          offset: const Offset(-10,10),
+          blurRadius: 2,
+        ),
+      ],
+    );
+  }
+}
+
+class _LoginFormatPage extends StatelessWidget {
+
+  const _LoginFormatPage({
     Key? key,
   }) : super(key: key);
 
@@ -116,7 +203,7 @@ class _ContainerTextClave extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
         autocorrect: false,
-        obscureText: true,
+        keyboardType: TextInputType.emailAddress,
         style: const TextStyle(fontSize: 20,color: Colors.white,),
         decoration: InputDecorations.authInputDecorationGeneral(
             labelText: 'Contraseña',
@@ -182,3 +269,4 @@ class _ContainerButton extends StatelessWidget {
     );
   }
 }
+

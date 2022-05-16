@@ -18,11 +18,16 @@ class CardContainerGeneral extends StatelessWidget {
         width: double.infinity,
         //height: 400,
         decoration: _cardBorders(),
-        child: Stack(
+        child: Container(
           alignment: Alignment.bottomLeft,
-          children: [
-            child,
-          ]
+          child: Column(
+            children: [
+              ChangeNotifierProvider(
+                create: (_) {},
+                child: child,
+              ),
+            ]
+          ),
         ),
       ),
     );

@@ -37,7 +37,7 @@ class _EventoPageBody extends StatelessWidget {
               children: [
                 ImageEvento(url: eventoService.eventoSelect.imagen),
                 Positioned(
-                  top: 30,
+                  top: 40,
                   left: 5,
                   child: IconButton(
                     onPressed: () => Navigator.of(context).pop(), 
@@ -45,7 +45,7 @@ class _EventoPageBody extends StatelessWidget {
                   )
                 ),
                 Positioned(
-                  top: 30,
+                  top: 40,
                   right: 20,
                   child: IconButton(
                     onPressed: () {},
@@ -59,16 +59,10 @@ class _EventoPageBody extends StatelessWidget {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.save_outlined),
-        onPressed: (){
-          // Programar guardar el producto.
-        },
-      ),
+      floatingActionButton: _AgregarButton(),
     );
   }
 }
-
 class _EventoForm extends StatelessWidget {
   const _EventoForm({
     Key? key,
@@ -79,7 +73,7 @@ class _EventoForm extends StatelessWidget {
     final eventoForm = Provider.of<EventoFormProvider>(context);
     final evento = eventoForm.evento;
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10),
+      padding: EdgeInsets.only(left: 10,right: 10,bottom: 10),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
         width: double.infinity,
@@ -87,18 +81,43 @@ class _EventoForm extends StatelessWidget {
         child: Form(
           child: Column(
             children: [
-              SizedBox(height: 10,),
+              SizedBox(height: 0,),
               TextFormField(
                 initialValue: evento.nombre,
+                keyboardType: TextInputType.text,
                 onChanged: ( value ) => evento.nombre = value,
                 validator: ( value ) {
                   if(value == null || value.length < 1){
                     return 'El nombre es obligatorio';
                   }
                 }, 
-                decoration: InputDecorations.authInputDecoration(hintText: 'Nombre del Producto', labelText: 'Nombre'),
+                style: const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+                cursorColor: Colors.white,
+                decoration: InputDecorations.authInputDecorationEvento(
+                  hintText: 'Nombre del Evento', 
+                  labelText: '',
+                ),
               ),
-              SizedBox(height: 30,),
+              SizedBox(height: 0,),
+              TextFormField(
+                initialValue: '${evento.lugar}',
+                onChanged: ( value ) => evento.lugar = value,
+                keyboardType: TextInputType.text, // Deja solo teclado numerico 
+                style: const TextStyle(fontSize: 18,color: Colors.white,),
+                textAlign: TextAlign.center,
+                cursorColor: Colors.white,
+                decoration: InputDecorations.authInputDecorationEvento(
+                  hintText: 'Lugar del evento',
+                  labelText: '',
+                ),
+                validator: ( value ) {
+                  if(value == null || value.length < 1){
+                    return 'El lugar es obligatorio';
+                  }
+                }, 
+              ),
+              SizedBox(height: 0,),
               TextFormField(
                 initialValue: '${evento.valor}',
                 inputFormatters: [
@@ -112,15 +131,217 @@ class _EventoForm extends StatelessWidget {
                   }
                 },
                 keyboardType: TextInputType.number, // Deja solo teclado numerico 
-                decoration: InputDecorations.authInputDecoration(hintText: '\$10.000', labelText: 'Valor'),
+                style: const TextStyle(fontSize: 18,color: Colors.white,),
+                textAlign: TextAlign.center,
+                cursorColor: Colors.white,
+                decoration: InputDecorations.authInputDecorationEvento(
+                  hintText: 'Valor boleta',
+                  labelText: '',
+                ),
               ),
-              SizedBox(height: 30,),
+              SizedBox(height: 0,),
+              TextFormField(
+                initialValue: 'Dg 61c # 26-36, Bogotá, Cundinamarca',
+                onChanged: ( value ) {
+                  if(int.tryParse(value) == null){
+                    evento.valor = 0;
+                  }else{
+                    evento.valor = int.parse(value);
+                  }
+                },
+                keyboardType: TextInputType.text, // Deja solo teclado numerico 
+                style: const TextStyle(fontSize: 18,color: Colors.white,),
+                textAlign: TextAlign.center,
+                cursorColor: Colors.white,
+                decoration: InputDecorations.authInputDecorationEvento(
+                  hintText: 'Dirección',
+                  labelText: ''
+                ),
+                validator: ( value ) {
+                  if(value == null || value.length < 1){
+                    return 'La dirección es obligatoria';
+                  }
+                }, 
+              ),
+              SizedBox(height: 20,),
+              Row(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: TextFormField(
+                      initialValue: '${evento.apertura}',
+                      onChanged: ( value ) {
+                        if(int.tryParse(value) == null){
+                          evento.valor = 0;
+                        }else{
+                          evento.valor = int.parse(value);
+                        }
+                      },
+                      keyboardType: TextInputType.text, // Deja solo teclado numerico 
+                      style: const TextStyle(fontSize: 18,color: Colors.white,),
+                      textAlign: TextAlign.center,
+                      cursorColor: Colors.white,
+                      decoration: InputDecorations.authInputDecorationGeneral(
+                        hintText: '00:00',
+                        labelText: 'Hora de apertura',
+                      ),
+                      validator: ( value ) {
+                        if(value == null || value.length < 1){
+                          return 'La hora de apertura es obligatoria';
+                        }
+                      }, 
+                    ),
+                  ),
+                  SizedBox(width: MediaQuery.of(context).size.width * 0.04,),
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: TextFormField(
+                      initialValue: '${evento.inicio}',
+                      onChanged: ( value ) {
+                        if(int.tryParse(value) == null){
+                          evento.valor = 0;
+                        }else{
+                          evento.valor = int.parse(value);
+                        }
+                      },
+                      keyboardType: TextInputType.text, // Deja solo teclado numerico 
+                      style: const TextStyle(fontSize: 18,color: Colors.white,),
+                      textAlign: TextAlign.center,
+                      decoration: InputDecorations.authInputDecorationGeneral(
+                        hintText: '00:00',
+                        labelText: 'Hora de inicio',
+                      ),
+                      validator: ( value ) {
+                        if(value == null || value.length < 1){
+                          return 'La hora de apertura es obligatoria';
+                        }
+                      }, 
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 15,),
+              Container(
+                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                width: double.infinity,
+                child: Row(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      child: TextFormField(
+                        initialValue: '${evento.dias}',
+                        onChanged: ( value ) {
+                          if(int.tryParse(value) == null){
+                            evento.valor = 0;
+                          }else{
+                            evento.valor = int.parse(value);
+                          }
+                        },
+                        keyboardType: TextInputType.text, // Deja solo teclado numerico 
+                        style: const TextStyle(fontSize: 15,color: Colors.white,),
+                        textAlign: TextAlign.center,
+                        cursorColor: Colors.white,
+                        decoration: InputDecorations.authInputDecorationGeneral(
+                          hintText: '',
+                          labelText: 'Dias',
+                        ),
+                        validator: ( value ) {
+                          if(value == null || value.length < 1){
+                            return 'El o los dias son obligatorios';
+                          }
+                        }, 
+                      ),
+                    ),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.03,),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      child: TextFormField(
+                        initialValue: '${evento.mes}',
+                        onChanged: ( value ) {
+                          if(int.tryParse(value) == null){
+                            evento.valor = 0;
+                          }else{
+                            evento.valor = int.parse(value);
+                          }
+                        },
+                        keyboardType: TextInputType.text, // Deja solo teclado numerico 
+                        style: const TextStyle(fontSize: 15,color: Colors.white,),
+                        textAlign: TextAlign.center,
+                        cursorColor: Colors.white,
+                        decoration: InputDecorations.authInputDecorationGeneral(
+                          hintText: '',
+                          labelText: 'Mes',
+                        ),
+                        validator: ( value ) {
+                          if(value == null || value.length < 1){
+                            return 'El mes es obligatorio';
+                          }
+                        }, 
+                      ),
+                    ),
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.03,),
+                    Container(
+                      width: MediaQuery.of(context).size.width * 0.25,
+                      child: TextFormField(
+                        initialValue: '${evento.anual}',
+                        onChanged: ( value ) {
+                          if(int.tryParse(value) == null){
+                            evento.valor = 0;
+                          }else{
+                            evento.valor = int.parse(value);
+                          }
+                        },
+                        keyboardType: TextInputType.text, // Deja solo teclado numerico 
+                        style: const TextStyle(fontSize: 15,color: Colors.white,),
+                        textAlign: TextAlign.center,
+                        cursorColor: Colors.white,
+                        decoration: InputDecorations.authInputDecorationGeneral(
+                          hintText: '',
+                          labelText: 'Año',
+                        ),
+                        validator: ( value ) {
+                          if(value == null || value.length < 1){
+                            return 'El año es obligatorio';
+                          }
+                        }, 
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20,),
+              TextFormField(
+                initialValue: '${evento.descripcion}',
+                onChanged: ( value ) {
+                  if(int.tryParse(value) == null){
+                    evento.valor = 0;
+                  }else{
+                    evento.valor = int.parse(value);
+                  }
+                },
+                keyboardType: TextInputType.text, // Deja solo teclado numerico 
+                style: const TextStyle(fontSize: 16,color: Colors.white,),
+                textAlign: TextAlign.center,
+                cursorColor: Colors.white,
+                maxLines: 8,
+                decoration: InputDecorations.authInputDecorationGeneral(
+                  hintText: 'Descripción',
+                  labelText: 'Información General'
+                ),
+                validator: ( value ) {
+                  if(value == null || value.length < 1){
+                    return 'La descripción es obligatorio';
+                  }
+                }, 
+              ),
+              SizedBox(height: 15,),
               SwitchListTile.adaptive(
                 value: true,
-                title: Text('Disponible'),
-                activeColor: Colors.indigo, 
+                title: Text('Disponible',style: TextStyle(color: Colors.white),),
+                activeColor: Colors.white, 
                 onChanged: eventoForm.updateEstado,
-              )
+              ),
+              SizedBox(height: 30,),
             ],
           )
         ),
@@ -129,14 +350,47 @@ class _EventoForm extends StatelessWidget {
   }
 
   BoxDecoration _buildBoxDecoration() => BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.only(topLeft: Radius.circular(25),topRight: Radius.circular(25)),
-      boxShadow: [
+    //color: Colors.indigo,
+    borderRadius: BorderRadius.only(
+      bottomRight: Radius.circular(20),
+      bottomLeft: Radius.circular(20)
+    ),
+    gradient: LinearGradient(
+      colors: [
+      //  Colors.indigo,
+      //  Colors.red
+        Colors.black.withOpacity(0.85),
+        Color.fromARGB(255, 105, 16, 10).withOpacity(0.9),
+        Color.fromARGB(255, 243, 115, 105),
+        Color.fromARGB(255, 105, 16, 10).withOpacity(0.9),
+        Colors.black.withOpacity(0.85),
+      ],
+    ), 
+    boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.05),
+          color: Colors.black.withOpacity(0.5),
           blurRadius: 10,
-          offset: Offset(0,5),
-        )
-      ]
+          spreadRadius: 5,
+        ),
+      ],
   );
+}
+class _AgregarButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      backgroundColor: Colors.red, 
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Icon(
+        Icons.save_outlined,
+        size: 45,
+        color: Colors.white,
+      ),
+      onPressed: (){
+
+      },
+    );
+  }
 }

@@ -1,12 +1,12 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:bogo_u/models/models.dart';
 import 'package:bogo_u/services/services.dart';
 import 'package:bogo_u/ui/uis.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-class LoginFormatPage extends StatelessWidget {
-
-  const LoginFormatPage({
+class RegisterFormatPage extends StatelessWidget {
+  
+  const RegisterFormatPage({
     Key? key,
   }) : super(key: key);
 
@@ -34,7 +34,7 @@ class LoginFormatPage extends StatelessWidget {
                   width: double.infinity,
                   child: Center(
                     child: Text(
-                      'Bienvenido',
+                      'Crear una cuenta',
                       style: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis, 
@@ -116,7 +116,7 @@ class _ContainerTextClave extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
         autocorrect: false,
-        obscureText: true,
+        keyboardType: TextInputType.emailAddress,
         style: const TextStyle(fontSize: 20,color: Colors.white,),
         decoration: InputDecorations.authInputDecorationGeneral(
             labelText: 'Contraseña',
@@ -156,7 +156,7 @@ class _ContainerButton extends StatelessWidget {
         child: Container(
           padding: EdgeInsets.symmetric(vertical: 10),
           child: Text(
-            loginForm.isLoading ? 'Espere' : 'Ingresar',
+            loginForm.isLoading ? 'Espere' : 'Crear',
             style: TextStyle(fontSize: 20,color: Colors.black,),              
           ),
         ),
@@ -164,19 +164,20 @@ class _ContainerButton extends StatelessWidget {
           ? null
           : () async {
             FocusScope.of(context).unfocus(); //inhabilita el teclado
-            final authService = Provider.of<AuthService>(context,listen: false);
-            if (!loginForm.isValidForm()) return; // si no es valido retorna
-            loginForm.isLoading = true;
-            final String? errorMessage = await  authService.login(
-              loginForm.email, loginForm.password
-            );
-            
-            if (errorMessage == null) {
-              Navigator.pushNamed(context, 'principal');
-            } else {
-              print(errorMessage);
-            }
-            loginForm.isLoading = false;
+              final authService =
+                  Provider.of<AuthService>(context, listen: false);
+              if (!loginForm.isValidForm())
+                return; // si no es valido retorna
+              loginForm.isLoading = true;
+              //await Future.delayed(Duration(seconds: 2));
+              final String? errorMessage = await authService.createUser(
+                  loginForm.email, loginForm.password);
+              if (errorMessage == null) {
+                Navigator.pushReplacementNamed(context, 'principal');
+              } else {
+                print(errorMessage);
+                loginForm.isLoading = false;
+              }
           }
       ),
     );

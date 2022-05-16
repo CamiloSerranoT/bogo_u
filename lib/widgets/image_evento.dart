@@ -12,13 +12,13 @@ class ImageEvento extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 0,right: 0, top: 23),
+      padding: EdgeInsets.only(left: 10,right: 10, top: 35),
       child: Container(
         decoration: _buildBoxDecoration(),
         width: double.infinity,
         //height: 200,
         child: ClipRRect(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(0),topRight: Radius.circular(0)),
+          borderRadius: BorderRadius.only(topLeft: Radius.circular(20),topRight: Radius.circular(20)),
           child: this.url == null ? 
           Image(
             image: AssetImage('assets/img/no-image.png'),
@@ -38,10 +38,10 @@ class ImageEvento extends StatelessWidget {
     return BoxDecoration(
       borderRadius: BorderRadius.only(topLeft: Radius.circular(45),topRight: Radius.circular(45)),
       boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.05),
+        BoxShadow( 
+          color: Colors.black.withOpacity(0.5),
           blurRadius: 10,
-          offset: Offset(0,5),
+          spreadRadius: 5,
         )
       ]
     );

@@ -38,7 +38,7 @@ class RegisterPage extends StatelessWidget {
                       MaterialStateProperty.all(Colors.grey.withOpacity(0.1)),
                   shape: MaterialStateProperty.all(StadiumBorder()),
                 ),
-                onPressed: () => Navigator.popAndPushNamed(context, 'login'),
+                onPressed: () => Navigator.popAndPushNamed(context, 'checking'),
                 child: Text('Ya tienes cuenta?',
                     style: TextStyle(fontSize: 17, color: Colors.black87)),
               ),
