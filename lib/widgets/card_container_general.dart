@@ -21,11 +21,7 @@ class CardContainerGeneral extends StatelessWidget {
         child: Stack(
           alignment: Alignment.bottomLeft,
           children: [
-            ChangeNotifierProvider(
-              create: (_) {},
-              child: child,
-            ),
-            
+            child,
           ]
         ),
       ),
@@ -35,12 +31,17 @@ class CardContainerGeneral extends StatelessWidget {
   BoxDecoration _cardBorders() {
     return BoxDecoration(
       color: Colors.black,
-      borderRadius: BorderRadius.only(topLeft: Radius.circular(40),bottomRight: Radius.circular(40)),
+      borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(40),
+        bottomRight: Radius.circular(40),
+        topRight: Radius.circular(40),
+        bottomLeft: Radius.circular(40)
+      ),
       boxShadow: [
         BoxShadow(
-          color: Colors.white.withOpacity(0.50),
+          color: Colors.black.withOpacity(0.50),
           offset: const Offset(-10,10),
-          blurRadius: 4,
+          blurRadius: 2,
         ),
       ],
     );

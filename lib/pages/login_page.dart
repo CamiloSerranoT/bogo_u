@@ -1,13 +1,6 @@
 import 'package:bogo_u/pages/pages.dart';
 import 'package:flutter/material.dart';
-import 'package:bogo_u/models/login_Form.dart';
-import 'package:bogo_u/ui/uis.dart';
-import 'package:provider/provider.dart';
 import 'package:bogo_u/widgets/widgets.dart';
-import 'package:bogo_u/models/models.dart';
-import 'package:bogo_u/services/services.dart';
-
-
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -47,11 +40,9 @@ class LoginPage extends StatelessWidget {
                 ),
                 onPressed: () => Navigator.popAndPushNamed(context, 'register'),
                 child: Text('Crear una nueva cuenta',
-                    style: TextStyle(fontSize: 17, color: Colors.black87)),
-              ),
-              SizedBox(
-                height: 50,
-              ),
+                    style: TextStyle(fontSize: 17, color: Colors.black87)
+                ),
+              ),         
             ],
           ),
         ),
