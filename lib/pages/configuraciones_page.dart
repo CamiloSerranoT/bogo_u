@@ -21,7 +21,7 @@ class configuracionesPage extends StatelessWidget {
       }
     }
     
-    usuarioService.usuariosSelect = usuarioService.usuarios[0].copy(); // Quitar fuera de pruebas
+    //usuarioService.usuariosSelect = usuarioService.usuarios[0].copy(); // Quitar fuera de pruebas
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(

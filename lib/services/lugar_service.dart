@@ -10,7 +10,7 @@ class LugarService extends ChangeNotifier{
   final String _baseUrl = 'bogo-u-default-rtdb.firebaseio.com';
   bool isLoading = true; 
 
-  EventoService(){
+  LugarService(){
     this.loadLugares();
   }
   Future <List<Lugar>> loadLugares() async{

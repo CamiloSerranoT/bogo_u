@@ -1,7 +1,9 @@
+import 'package:bogo_u/models/models.dart';
+import 'package:bogo_u/pages/pages.dart';
 import 'package:bogo_u/providers/providers.dart';
 import 'package:bogo_u/services/services.dart';
 import 'package:flutter/material.dart';
-import 'package:bogo_u/ui/input_decorations.dart';
+import 'package:bogo_u/ui/uis.dart';
 import 'package:bogo_u/widgets/widgets.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -64,14 +66,30 @@ class _EventoPageBody extends StatelessWidget {
   }
 }
 class _EventoForm extends StatelessWidget {
-  const _EventoForm({
+  _EventoForm({
     Key? key,
   }) : super(key: key);
+
+  late Lugar lugar;
 
   @override
   Widget build(BuildContext context) {
     final eventoForm = Provider.of<EventoFormProvider>(context);
     final evento = eventoForm.evento;
+    List<String> listaDesplegable = []; 
+    final lugarService = Provider.of<LugarService>(context);
+    if(lugarService.isLoading) return LoadingPage();
+
+    for(int i = 0; i<lugarService.lugares.length;i++){
+      if(lugarService.lugares[i].lugar == evento.lugar){
+        lugar = lugarService.lugares[i];
+      }
+      listaDesplegable.add(lugarService.lugares[i].nombre);
+    }
+    
+    // Edición de datos de Lista desplegable
+    var vistaList = lugar.nombre; 
+
     return Padding(
       padding: EdgeInsets.only(left: 10,right: 10,bottom: 10),
       child: Container(
@@ -101,8 +119,8 @@ class _EventoForm extends StatelessWidget {
               ),
               SizedBox(height: 0,),
               TextFormField(
-                initialValue: '${evento.lugar}',
-                onChanged: ( value ) => evento.lugar = value,
+                initialValue: vistaList,
+                onChanged: ( value ) => vistaList = value,
                 keyboardType: TextInputType.text, // Deja solo teclado numerico 
                 style: const TextStyle(fontSize: 18,color: Colors.white,),
                 textAlign: TextAlign.center,
@@ -117,6 +135,32 @@ class _EventoForm extends StatelessWidget {
                   }
                 }, 
               ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.8,
+
+              ),
+              /*Container(
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: DropdownButton<String>(
+                  alignment: Alignment.center,
+                  items: listaDesplegable.map<DropdownMenuItem<String>>((String value){
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(fontSize: 25.0),
+                      ), // Text
+                    ); // DropdownMenuItem
+                  }).toList(),
+                  onChanged: (value) => {
+                    vistaList = value.toString(),
+                    //setState()
+                  },
+                  value: vistaList,
+                ),
+              ),*/
+              
+
               SizedBox(height: 0,),
               TextFormField(
                 initialValue: '${evento.valor}',
@@ -141,7 +185,7 @@ class _EventoForm extends StatelessWidget {
               ),
               SizedBox(height: 0,),
               TextFormField(
-                initialValue: 'Dg 61c # 26-36, Bogotá, Cundinamarca',
+                initialValue: '${lugar.direccion}',
                 onChanged: ( value ) {
                   if(int.tryParse(value) == null){
                     evento.valor = 0;

@@ -1,5 +1,9 @@
+import 'package:bogo_u/pages/pages.dart';
+import 'package:bogo_u/providers/providers.dart';
+import 'package:bogo_u/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:bogo_u/models/models.dart';
+import 'package:provider/provider.dart';
 
 class CardEvento extends StatelessWidget {
   
@@ -25,7 +29,7 @@ class CardEvento extends StatelessWidget {
           _BackgroundImage(evento.imagen),
           _EventoDetails(
             nombreEvento: evento.nombre,
-            valorEvento: evento.lugar,
+            lugarEvento: evento.lugar,
             FechaEvento: evento.dias + ' de ' + evento.mes + ' del ' + evento.anual,
           ),
         ]),
@@ -51,18 +55,27 @@ class CardEvento extends StatelessWidget {
 class _EventoDetails extends StatelessWidget {
   
   final String nombreEvento;
-  final String valorEvento;
+  final int lugarEvento;
   final String FechaEvento;
+  late String lugarEventoString;
 
-  const _EventoDetails({
+  _EventoDetails({
     Key? key,
     required this.nombreEvento,
-    required this.valorEvento,
+    required this.lugarEvento,
     required this.FechaEvento,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final lugarService = Provider.of<LugarService>(context);
+    if(lugarService.isLoading) return LoadingPage();
+
+    for(int i = 0; i<lugarService.lugares.length;i++){
+      if(lugarService.lugares[i].lugar == lugarEvento){
+        lugarEventoString = lugarService.lugares[i].nombre;
+      }
+    }
     return Padding(
       padding: EdgeInsets.only(right: 0),
       child: Container(
@@ -78,7 +91,7 @@ class _EventoDetails extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis, 
             ),
-            Text('Lugar: ' + valorEvento,
+            Text('Lugar: ' + lugarEventoString,
               style: TextStyle(fontSize: 16, color: Colors.white),
               maxLines: 1,
               overflow: TextOverflow.ellipsis, 

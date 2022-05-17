@@ -27,7 +27,7 @@ class Evento {
     String dias;
     bool estado;
     String inicio;
-    String lugar;
+    int lugar;
     String mes;
     String nombre;
     int tipo;
