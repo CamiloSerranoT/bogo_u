@@ -16,6 +16,7 @@ class AppState extends StatelessWidget {
         ChangeNotifierProvider(create: ( _ ) => AuthService(),),
         ChangeNotifierProvider(create: ( _ ) => EventoService(),),
         //ChangeNotifierProvider(create: ( _ ) => LugarService(),),
+        ChangeNotifierProvider(create: ( _ ) => UsuarioService(),),
         ChangeNotifierProvider(create: ( _ ) => LoginFormProvider(),),
       ],
       child: MyApp(),
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
         title: 'Bogo_U',
         debugShowCheckedModeBanner: false,
-        initialRoute: 'principal',
+        initialRoute: 'configuraciones',
         routes: {
           'login': ( _ ) => LoginPage(),
           'principal': ( _ ) => principalPage(),

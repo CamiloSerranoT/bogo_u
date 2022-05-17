@@ -164,7 +164,7 @@ class _EventoForm extends StatelessWidget {
                 }, 
               ),
               SizedBox(height: 20,),
-              Row(
+              Wrap(
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * 0.4,
@@ -224,7 +224,7 @@ class _EventoForm extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                 width: double.infinity,
-                child: Row(
+                child: Wrap(
                   children: [
                     Container(
                       width: MediaQuery.of(context).size.width * 0.25,

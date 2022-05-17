@@ -30,7 +30,6 @@ class BarraInferior extends StatelessWidget {
       ],
       onTap: (index){
         if(index != indexInit){
-          print(index);
           if(index == 0){
             Navigator.pushNamed(context, 'principal');
           }else if(index == 1){

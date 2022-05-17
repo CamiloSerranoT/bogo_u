@@ -1,94 +1,150 @@
+import 'package:bogo_u/providers/providers.dart';
+import 'package:bogo_u/services/services.dart';
+import 'package:bogo_u/ui/input_decorations.dart';
+import 'package:bogo_u/widgets/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:bogo_u/models/models.dart';
+import 'package:provider/provider.dart';
 
 class CardUsuario extends StatelessWidget {
   
-  final Evento evento;
-
   const CardUsuario({
     Key? key,
-    required this.evento,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
-      child: Container(
-        margin: EdgeInsets.only(top: 20, bottom: 5),
-        width: double.infinity,
-        height: 400,
-        decoration: _cardBorders(),
-        child: Stack(
-          alignment: Alignment.bottomLeft,
-          children: [
-          _BackgroundImage(evento.imagen),
-          _ProductoDetails(
-            nombreEvento: evento.nombre,
-            valorEvento: evento.lugar,
-            FechaEvento: evento.dias + ' de ' + evento.mes + ' del ' + evento.anual,
-          ),
-        ]),
-      ),
-    );
-  }
-
-  BoxDecoration _cardBorders() {
-    return BoxDecoration(
-      color: Colors.black,
-      borderRadius: BorderRadius.only(topLeft: Radius.circular(40),bottomRight: Radius.circular(40)),
-      boxShadow: [
-        BoxShadow(
-          color: Colors.black.withOpacity(0.50),
-          offset: const Offset(-10,10),
-          blurRadius: 4,
-        ),
-      ],
+    final usuarioService = Provider.of<UsuarioService>(context);
+    return ChangeNotifierProvider(
+      create: ( _ ) => UsuarioFormProvider(usuarioService.usuariosSelect),
+      child: _UsuarioBody(),
     );
   }
 }
 
-class _ProductoDetails extends StatelessWidget {
-  
-  final String nombreEvento;
-  final String valorEvento;
-  final String FechaEvento;
-
-  const _ProductoDetails({
+class _UsuarioBody extends StatelessWidget {
+  const _UsuarioBody({
     Key? key,
-    required this.nombreEvento,
-    required this.valorEvento,
-    required this.FechaEvento,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(right: 0),
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        width: double.infinity,
-        height: 80,
-        decoration: _buildBoxDecoration(),
+    return Scaffold(
+      body:SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Evento: ' + nombreEvento,
-              style: TextStyle(fontSize: 17, color: Colors.white, fontWeight: FontWeight.bold),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis, 
-            ),
-            Text('Lugar: ' + valorEvento,
-              style: TextStyle(fontSize: 16, color: Colors.white),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis, 
-            ),
-            Text('Fecha: ' + FechaEvento,
-              style: TextStyle(fontSize: 16, color: Colors.white),
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis, 
-            )
+            SizedBox(height: 10,),
+            _UsuarioForm()
           ],
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
+      floatingActionButton: _AgregarButton(),
+    );
+  }
+}
+
+class _UsuarioForm extends StatelessWidget {
+  const _UsuarioForm({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final usuarioForm = Provider.of<UsuarioFormProvider>(context);
+    final usuario = usuarioForm.usuario;
+    return Padding(
+      padding: EdgeInsets.only(left: 10,right: 10,bottom: 10),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        width: double.infinity,
+        decoration: _buildBoxDecoration(),
+        child: Form(
+          child: Column(
+            children: [
+              ImageUsuario(url: usuario.imagen),
+              TextFormField(
+                initialValue: usuario.nombres,
+                keyboardType: TextInputType.text,
+                onChanged: ( value ) => usuario.nombres = value,
+                validator: ( value ) {
+                  if(value == null || value.length < 1){
+                    return 'Los nombres son obligatorios';
+                  }
+                }, 
+                style: const TextStyle(fontSize: 20,color: Colors.white),
+                textAlign: TextAlign.center,
+                cursorColor: Colors.white,
+                decoration: InputDecorations.authInputDecorationGeneral(
+                  hintText: 'Nombres', 
+                  labelText: 'Nombres',
+                ),
+              ),
+              SizedBox(height: 20,),
+              TextFormField(
+                initialValue: usuario.apellidos,
+                keyboardType: TextInputType.text,
+                onChanged: ( value ) => usuario.apellidos = value,
+                validator: ( value ) {
+                  if(value == null || value.length < 1){
+                    return 'Los apellidos son obligatorios';
+                  }
+                }, 
+                style: const TextStyle(fontSize: 20,color: Colors.white),
+                textAlign: TextAlign.center,
+                cursorColor: Colors.white,
+                decoration: InputDecorations.authInputDecorationGeneral(
+                  hintText: 'Apellidos', 
+                  labelText: 'Apellidos',
+                ),
+              ),
+              SizedBox(height: 20,),
+              TextFormField(
+                initialValue: usuario.correo,
+                keyboardType: TextInputType.text,
+                onChanged: ( value ) => usuario.correo = value,
+                validator: (value) {
+                  //Return null cuando es aceptada la expresion escrita.
+                  String pattern =
+                      r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+                  RegExp regExp = RegExp(pattern);
+                  return regExp.hasMatch(value ?? '') ? null : 'No es un correo';
+                },
+                style: const TextStyle(fontSize: 20,color: Colors.white),
+                textAlign: TextAlign.center,
+                cursorColor: Colors.white,
+                decoration: InputDecorations.authInputDecorationGeneral(
+                  hintText: 'Correo', 
+                  labelText: 'Correo',
+                ),
+              ),
+              SizedBox(height: 20,),
+              TextFormField(
+                initialValue: '${usuario.telefono}',
+                onChanged: ( value ) => usuario.telefono = int.parse(value),
+                keyboardType: TextInputType.number, // Deja solo teclado numerico 
+                validator: ( value ) {
+                  if(value == null || value.length < 1){
+                    return 'El telefono es obligatorio';
+                  }
+                }, 
+                style: const TextStyle(fontSize: 18,color: Colors.white,),
+                textAlign: TextAlign.center,
+                cursorColor: Colors.white,
+                decoration: InputDecorations.authInputDecorationGeneral(
+                  hintText: 'Telefono',
+                  labelText: 'Telefono',
+                ),
+              ),
+              SizedBox(height: 15,),
+              SwitchListTile.adaptive(
+                value: true,
+                title: Text('Disponible',style: TextStyle(color: Colors.white),),
+                activeColor: Colors.white, 
+                onChanged: usuarioForm.updateEstado,
+              ),
+              SizedBox(height: 30,),
+            ],
+          )
         ),
       ),
     );
@@ -96,43 +152,44 @@ class _ProductoDetails extends StatelessWidget {
 
   BoxDecoration _buildBoxDecoration() => BoxDecoration(
     //color: Colors.indigo,
-    borderRadius: BorderRadius.only(bottomLeft: Radius.circular(0), bottomRight: Radius.circular(25)),
+    borderRadius: BorderRadius.all(Radius.circular(30)),
     gradient: LinearGradient(
       colors: [
       //  Colors.indigo,
       //  Colors.red
-        Colors.black,
-        Color.fromARGB(255, 105, 16, 10),
+        Colors.black.withOpacity(0.85),
+        Color.fromARGB(255, 105, 16, 10).withOpacity(0.9),
         Color.fromARGB(255, 243, 115, 105),
+        Color.fromARGB(255, 105, 16, 10).withOpacity(0.9),
+        Colors.black.withOpacity(0.85),
       ],
     ), 
+    boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.5),
+          blurRadius: 10,
+          spreadRadius: 5,
+        ),
+      ],
   );
 }
 
-class _BackgroundImage extends StatelessWidget {
-  final String? url;
-
-  const _BackgroundImage(this.url);
-
+class _AgregarButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-        //borderRadius: BorderRadius.circular(25),
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(40),bottomRight: Radius.circular(40)),
-        child: Container(
-            width: double.infinity,
-            height: 400,
-            child: url == null ?
-            Image(
-              image: AssetImage('assets/img/no-image.png'),
-              fit: BoxFit.cover,
-            )
-            :FadeInImage(
-              placeholder: AssetImage('assets/img/jar-loading.gif'),
-              image: NetworkImage(url!),
-              fit: BoxFit.cover,
-            ),
-          ),
-        );
+    return FloatingActionButton(
+      backgroundColor: Colors.red, 
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Icon(
+        Icons.save_outlined,
+        size: 45,
+        color: Colors.white,
+      ),
+      onPressed: (){
+
+      },
+    );
   }
 }

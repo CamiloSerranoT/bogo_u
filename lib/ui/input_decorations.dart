@@ -116,4 +116,44 @@ class InputDecorations {
     );
   }
 
+  static InputDecoration authInputDecorationUsuario({
+    required String hintText,
+    required String labelText,
+    IconData? prefix,
+  }){
+    return InputDecoration(
+      focusedBorder: UnderlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.white,
+          width: 2,
+        ), 
+        borderRadius: BorderRadius.circular(5),
+      ),
+      errorStyle: TextStyle(color: Colors.white),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.white,
+        ), 
+        borderRadius: BorderRadius.circular(5),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: BorderSide(
+          color: Colors.white,
+          width: 2,
+        ), 
+        borderRadius: BorderRadius.circular(5),
+      ),
+      hintText: hintText,      
+      labelText: labelText,
+      labelStyle: TextStyle(
+        color: Colors.white.withOpacity(0.8), // Color del fraseo del texto
+      ),
+      hintStyle: TextStyle(
+        color: Colors.white, // Color del fraseo hintText
+      ),
+      prefixIcon: prefix != null? Icon(prefix, color:Colors.white):null, // Color del icono
+      border: InputBorder.none,
+    );
+  }
+
 }
