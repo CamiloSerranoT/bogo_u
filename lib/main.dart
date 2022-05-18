@@ -13,11 +13,11 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        //ChangeNotifierProvider(create: ( _ ) => LoginFormProvider(),),
         ChangeNotifierProvider(create: ( _ ) => AuthService(),),
         ChangeNotifierProvider(create: ( _ ) => EventoService(),),
         ChangeNotifierProvider(create: ( _ ) => LugarService(),),
         ChangeNotifierProvider(create: ( _ ) => UsuarioService(),),
-        ChangeNotifierProvider(create: ( _ ) => LoginFormProvider(),),
       ],
       child: MyApp(),
     );
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
         title: 'Bogo_U',
         debugShowCheckedModeBanner: false,
-        initialRoute: 'principal',
+        initialRoute: 'checking',
         routes: {
           'login': ( _ ) => LoginPage(),
           'principal': ( _ ) => principalPage(),
@@ -39,18 +39,6 @@ class MyApp extends StatelessWidget {
           'evento' : ( _ ) => EventoPage(),
           'boletas' : ( _ ) => boletasPage(),
           'configuraciones' : ( _ ) => configuracionesPage(),
-          'configuracionesact' : ( _ ) => configuracionesActPage(),
-          'cambioclave' : ( _ ) => cambioClavePage(),
-          'cambioclaveant' : ( _ ) => cambioClaveActPage(),
-
-          /*'bailes' : ( _ ) => bailesPage(),
-          'conciertos' : ( _ ) => conciertosPage(),
-          'entradalibre' : ( _ ) => entradaLibrePage(),
-          'escenarios' : ( _ ) => escenariosPage(),
-          'museos' : ( _ ) => museosPage(),
-          'menu' : ( _ ) => menuPage(),
-          'movistar_arena' : ( _ ) => movistarArenaPage(),
-          'morat' : ( _ ) => moratPage(),*/
         },
     );
   }

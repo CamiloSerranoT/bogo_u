@@ -468,14 +468,11 @@ class _ListaDesplegableForm extends State<_ListaDesplegable> {
       onChanged: (value) => {
         vistaList = value,
         setState(() {
-          print('Value: ' + vistaList);
-          print('Value: ' + evento.lugar.toString());
           for(int i = 0; i<listaDesplegable.length;i++){
             if(value == listaDesplegable[i]){
               evento.lugar = i + 1;
             }
           }
-          print('Value: ' + evento.lugar.toString());
         }),
         },
       value: vistaList,

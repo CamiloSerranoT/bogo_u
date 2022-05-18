@@ -1,6 +1,9 @@
+
+import 'package:bogo_u/models/login_Form.dart';
 import 'package:bogo_u/pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:bogo_u/widgets/widgets.dart';
+import 'package:provider/provider.dart';
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -30,7 +33,10 @@ class LoginPage extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 80,),
-              CardContainerGeneral(child: LoginFormatPage(),),
+              ChangeNotifierProvider(
+                create: ( _ ) => LoginFormProvider(),
+                child: CardContainerGeneral(child: LoginFormatPage()),
+              ),
               SizedBox(height: 35,),
               TextButton(
                 style: ButtonStyle(
