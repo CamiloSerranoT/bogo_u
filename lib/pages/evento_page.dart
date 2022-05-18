@@ -138,9 +138,20 @@ class _EventoForm extends StatelessWidget {
               ),
               SizedBox(height: 0,),*/
               Container(
+                margin: EdgeInsets.all(10),
                 width: double.infinity,
-                alignment: Alignment.center,
-                
+                alignment: Alignment.center, 
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.1),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white.withOpacity(0.50),
+                      offset: const Offset(0,0),
+                      blurRadius: 2,
+                    ),
+                  ],
+                ),
                 child: ChangeNotifierProvider(
                   create: (_) {},
                   child: _ListaDesplegable(listaDesplegable,vistaList,evento),
@@ -456,15 +467,18 @@ class _ListaDesplegableForm extends State<_ListaDesplegable> {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       alignment: Alignment.center,
+      icon: Icon(Icons.keyboard_double_arrow_down_outlined,color: Colors.black),
       items: listaDesplegable.map<DropdownMenuItem<String>>((String value){
-        return DropdownMenuItem<String>(
+        return DropdownMenuItem<String>( 
+          alignment: Alignment.center,
           value: value,
           child: Text(
             value,
-            style: TextStyle(fontSize: 20,color: Colors.white),
+            style: TextStyle(fontSize: 20,color: Colors.black),
           ), 
         ); 
       }).toList(),
+    
       onChanged: (value) => {
         vistaList = value,
         setState(() {
