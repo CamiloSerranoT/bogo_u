@@ -94,8 +94,8 @@ class _Datos extends StatelessWidget {
                 labelText: 'Nombres',
                 //prefix: Icons.alternate_email,
                 hintText: ''),
-            initialValue: ''+datos.nombres,
-            onChanged: (value) => datos.nombres = value,
+            initialValue: ''/*+datos.nombres*/,
+            onChanged: (value) => /*datos.nombres = value*/null,
             validator: (value) {
               if (value != null && value.length >= 1) return null;
               return 'Debe escribir algun caracter';
@@ -109,8 +109,8 @@ class _Datos extends StatelessWidget {
                 labelText: 'Apellidos',
                 //prefix: Icons.alternate_email,
                 hintText: ''),
-            initialValue: ''+datos.apellidos,
-            onChanged: (value) => datos.apellidos = value,
+            initialValue: ''/*+datos.apellidos*/,
+            onChanged: (value) => /*datos.apellidos = value*/null,
             validator: (value) {
               if (value != null && value.length >= 1) return null;
               return 'Debe escribir algun caracter';
@@ -139,8 +139,8 @@ class _Datos extends StatelessWidget {
                 labelText: 'Telefono',
                 //prefix: Icons.alternate_email,
                 hintText: ''),
-            initialValue: ''+datos.telefono,
-            onChanged: (value) => datos.telefono = value,
+            initialValue: ''/*+datos.telefono*/,
+            onChanged: (value) => /*datos.telefono = value*/null,
             validator: (value) {
               if (value != null && value.length >= 1) return null;
               return 'Debe escribir algun caracter';

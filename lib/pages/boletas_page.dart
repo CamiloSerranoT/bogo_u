@@ -31,7 +31,7 @@ class boletasPage extends StatelessWidget {
           IconButton(
             onPressed: (){
               authService.logout();
-              Navigator.pushReplacementNamed(context, 'login');
+              Navigator.pushReplacementNamed(context, 'checking');
             },
             icon: Icon(Icons.login_outlined),
           ),

@@ -33,7 +33,7 @@ class principalPage extends StatelessWidget {
           IconButton(
             onPressed: (){
               authService.logout();
-              Navigator.pushNamed(context, 'register');
+              Navigator.pushNamed(context, 'checking');
             },
             icon: Icon(Icons.login_outlined),
           ),

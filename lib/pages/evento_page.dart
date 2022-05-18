@@ -76,8 +76,9 @@ class _EventoForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final eventoForm = Provider.of<EventoFormProvider>(context);
     final evento = eventoForm.evento;
-    List<String> listaDesplegable = []; 
     final lugarService = Provider.of<LugarService>(context);
+
+    List<String> listaDesplegable = []; 
     if(lugarService.isLoading) return LoadingPage();
 
     for(int i = 0; i<lugarService.lugares.length;i++){
@@ -118,7 +119,7 @@ class _EventoForm extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 0,),
-              TextFormField(
+              /*TextFormField(
                 initialValue: vistaList,
                 onChanged: ( value ) => vistaList = value,
                 keyboardType: TextInputType.text, // Deja solo teclado numerico 
@@ -135,32 +136,16 @@ class _EventoForm extends StatelessWidget {
                   }
                 }, 
               ),
-              SizedBox(
-                width: MediaQuery.of(context).size.width * 0.8,
-
-              ),
-              /*Container(
-                width: MediaQuery.of(context).size.width * 0.8,
-                child: DropdownButton<String>(
-                  alignment: Alignment.center,
-                  items: listaDesplegable.map<DropdownMenuItem<String>>((String value){
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Text(
-                        value,
-                        style: TextStyle(fontSize: 25.0),
-                      ), // Text
-                    ); // DropdownMenuItem
-                  }).toList(),
-                  onChanged: (value) => {
-                    vistaList = value.toString(),
-                    //setState()
-                  },
-                  value: vistaList,
+              SizedBox(height: 0,),*/
+              Container(
+                width: double.infinity,
+                alignment: Alignment.center,
+                
+                child: ChangeNotifierProvider(
+                  create: (_) {},
+                  child: _ListaDesplegable(listaDesplegable,vistaList,evento),
                 ),
-              ),*/
-              
-
+              ),
               SizedBox(height: 0,),
               TextFormField(
                 initialValue: '${evento.valor}',
@@ -438,3 +423,63 @@ class _AgregarButton extends StatelessWidget {
     );
   }
 }
+
+class _ListaDesplegable extends StatefulWidget{
+  
+  _ListaDesplegable(
+    this.listaDesplegable,
+    this.vistaList,
+    this.evento,
+  );
+  
+  late List<String> listaDesplegable = [];
+  late var vistaList;
+  late Evento evento;
+  
+  @override
+  State createState() => _ListaDesplegableForm(listaDesplegable, vistaList, evento);
+}
+
+class _ListaDesplegableForm extends State<_ListaDesplegable> {
+  
+  _ListaDesplegableForm(
+    this.listaDesplegable,
+    this.vistaList,
+    this.evento,
+  );
+  
+  late List<String> listaDesplegable = [];
+  late var vistaList;
+  late Evento evento;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      alignment: Alignment.center,
+      items: listaDesplegable.map<DropdownMenuItem<String>>((String value){
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(
+            value,
+            style: TextStyle(fontSize: 20,color: Colors.white),
+          ), 
+        ); 
+      }).toList(),
+      onChanged: (value) => {
+        vistaList = value,
+        setState(() {
+          print('Value: ' + vistaList);
+          print('Value: ' + evento.lugar.toString());
+          for(int i = 0; i<listaDesplegable.length;i++){
+            if(value == listaDesplegable[i]){
+              evento.lugar = i + 1;
+            }
+          }
+          print('Value: ' + evento.lugar.toString());
+        }),
+        },
+      value: vistaList,
+    );
+  }
+}
+
