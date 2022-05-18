@@ -1,7 +1,8 @@
-import 'package:bogo_u/services/services.dart';
-import 'package:bogo_u/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:bogo_u/services/services.dart';
+import 'package:bogo_u/widgets/widgets.dart';
+import 'package:bogo_u/pages/pages.dart';
 
 class boletasPage extends StatelessWidget {
   const boletasPage({Key? key}) : super(key: key);
@@ -10,6 +11,7 @@ class boletasPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final eventoService = Provider.of<EventoService>(context);
     final authService = Provider.of<AuthService>(context, listen: false); 
+    if(eventoService.isLoading) return LoadingPage();
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -23,7 +25,7 @@ class boletasPage extends StatelessWidget {
             ),
           ),
         ),
-        title: Text('Boletas'),
+        title: Text('Eventos'),
         titleTextStyle: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
         backgroundColor: Colors.transparent,
         centerTitle: true,
@@ -31,14 +33,47 @@ class boletasPage extends StatelessWidget {
           IconButton(
             onPressed: (){
               authService.logout();
-              Navigator.pushReplacementNamed(context, 'checking');
+              Navigator.pushNamed(context, 'checking');
             },
             icon: Icon(Icons.login_outlined),
           ),
         ],
       ),
-      body: Container(),
+      body: ListView.builder(
+        itemCount: eventoService.eventos.length,
+        itemBuilder: (BuildContext context, int index) => GestureDetector(
+          child: CardBoletas(
+            evento: eventoService.eventos[index],
+          ),
+          onTap: () {
+            eventoService.eventoSelect = eventoService.eventos[index].copy();
+            Navigator.pushNamed(context, 'evento');
+          },
+        ), 
+      ),
+      //floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      //floatingActionButton: _Agregar(),
       bottomNavigationBar: BarraInferior(indexInit: 1),
+    );
+  }
+}
+
+class _Agregar extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      backgroundColor: Colors.red, 
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Icon(
+        Icons.playlist_add_rounded,
+        size: 45,
+        color: Colors.white,
+      ),
+      onPressed: (){
+
+      },
     );
   }
 }

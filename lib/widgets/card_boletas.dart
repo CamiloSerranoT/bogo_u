@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:bogo_u/models/models.dart';
 import 'package:provider/provider.dart';
 
-class CardEvento extends StatelessWidget {
+class CardBoletas extends StatelessWidget {
   
   final Evento evento;
 
-  const CardEvento({
+  const CardBoletas({
     Key? key,
     required this.evento,
   }) : super(key: key);
@@ -25,7 +25,7 @@ class CardEvento extends StatelessWidget {
         child: Stack(
           alignment: Alignment.bottomLeft,
           children: [
-          _BackgroundImage(evento.imagen),
+          //_BackgroundImage(evento.imagen),
           _EventoDetails(
             nombreEvento: evento.nombre,
             lugarEvento: evento.lugar,

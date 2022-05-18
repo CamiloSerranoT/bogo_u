@@ -13,6 +13,7 @@ class configuracionesPage extends StatelessWidget {
     final authService = Provider.of<AuthService>(context, listen: false); 
     final datos = Provider.of<LoginFormProvider>(context);
     final usuarioService = Provider.of<UsuarioService>(context);
+    
     if(usuarioService.isLoading) return LoadingPage();
 
     for(int i = 0; i<usuarioService.usuarios.length;i++){

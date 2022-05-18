@@ -33,10 +33,11 @@ class LoginPage extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 80,),
-              ChangeNotifierProvider(
+              /*ChangeNotifierProvider(
                 create: ( _ ) => LoginFormProvider(),
                 child: CardContainerGeneral(child: LoginFormatPage()),
-              ),
+              ),*/
+              CardContainerGeneral(child: LoginFormatPage()),
               SizedBox(height: 35,),
               TextButton(
                 style: ButtonStyle(
@@ -44,7 +45,9 @@ class LoginPage extends StatelessWidget {
                       MaterialStateProperty.all(Colors.grey.withOpacity(0.1)),
                   shape: MaterialStateProperty.all(StadiumBorder()),
                 ),
-                onPressed: () => Navigator.popAndPushNamed(context, 'register'),
+                onPressed: () => {
+                  Navigator.popAndPushNamed(context, 'register')
+                },
                 child: Text('Crear una nueva cuenta',
                     style: TextStyle(fontSize: 17, color: Colors.black87)
                 ),

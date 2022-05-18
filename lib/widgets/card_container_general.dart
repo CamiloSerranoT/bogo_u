@@ -23,7 +23,7 @@ class CardContainerGeneral extends StatelessWidget {
           child: Column(
             children: [
               ChangeNotifierProvider(
-                create: (_) {},
+                create: ( _ ) {},
                 child: child,
               ),
             ]
@@ -44,9 +44,10 @@ class CardContainerGeneral extends StatelessWidget {
       ),
       boxShadow: [
         BoxShadow(
-          color: Colors.black.withOpacity(0.50),
+          color: Colors.black.withOpacity(0.5),
           offset: const Offset(-10,10),
           blurRadius: 2,
+          //spreadRadius: 8,
         ),
       ],
     );

@@ -13,7 +13,7 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        //ChangeNotifierProvider(create: ( _ ) => LoginFormProvider(),),
+        ChangeNotifierProvider(create: ( _ ) => LoginFormProvider(),),
         ChangeNotifierProvider(create: ( _ ) => AuthService(),),
         ChangeNotifierProvider(create: ( _ ) => EventoService(),),
         ChangeNotifierProvider(create: ( _ ) => LugarService(),),
@@ -28,18 +28,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-        title: 'Bogo_U',
-        debugShowCheckedModeBanner: false,
-        initialRoute: 'principal',
-        routes: {
-          'login': ( _ ) => LoginPage(),
-          'principal': ( _ ) => principalPage(),
-          'checking' : ( _ ) => CheckAuthPage(),
-          'register' : ( _ ) => RegisterPage(),
-          'evento' : ( _ ) => EventoPage(),
-          'boletas' : ( _ ) => boletasPage(),
-          'configuraciones' : ( _ ) => configuracionesPage(),
-        },
+      title: 'Bogo_U',
+      debugShowCheckedModeBanner: false,
+      initialRoute: 'boletas',
+      routes: {
+        'login': ( _ ) => LoginPage(),
+        'principal': ( _ ) => principalPage(),
+        'checking' : ( _ ) => CheckAuthPage(),
+        'register' : ( _ ) => RegisterPage(),
+        'evento' : ( _ ) => EventoPage(),
+        'boletas' : ( _ ) => boletasPage(),
+        'configuraciones' : ( _ ) => configuracionesPage(),
+      },
     );
   }
 

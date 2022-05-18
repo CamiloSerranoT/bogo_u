@@ -32,10 +32,11 @@ class RegisterPage extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 80,),
-              ChangeNotifierProvider(
+              /*ChangeNotifierProvider(
                 create: ( _ ) => LoginFormProvider(),
                 child: CardContainerGeneral(child: RegisterFormatPage(),),
-              ),
+              ),*/
+              CardContainerGeneral(child: RegisterFormatPage(),),
               SizedBox(height: 35,),
               TextButton(
                 style: ButtonStyle(
