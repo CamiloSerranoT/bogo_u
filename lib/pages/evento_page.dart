@@ -65,20 +65,42 @@ class _EventoPageBody extends StatelessWidget {
     );
   }
 }
+
 class _EventoForm extends StatelessWidget {
   _EventoForm({
     Key? key,
   }) : super(key: key);
 
-  late Lugar lugar;
+  late Tipo tipo;
+  
+  @override
+  Widget build(BuildContext context) {
+    final tipoService = Provider.of<TipoService>(context);
+    return _InitEventoForm(tipoService: tipoService);
+  }
+}
 
+
+class _InitEventoForm extends StatelessWidget {
+  _InitEventoForm({
+    Key? key,
+    required this.tipoService,
+  }) : super(key: key);
+
+  late Lugar lugar;
+  late Tipo tipo;
+  final TipoService tipoService;
+  
   @override
   Widget build(BuildContext context) {
     final eventoForm = Provider.of<EventoFormProvider>(context);
     final evento = eventoForm.evento;
     final lugarService = Provider.of<LugarService>(context);
-
+    print(lugarService.lugares);
+    // Parte de listado de lugares
     List<String> listaDesplegable = []; 
+    var vistaList;
+    
     if(lugarService.isLoading) return LoadingPage();
 
     for(int i = 0; i<lugarService.lugares.length;i++){
@@ -87,10 +109,11 @@ class _EventoForm extends StatelessWidget {
       }
       listaDesplegable.add(lugarService.lugares[i].nombre);
     }
-    
-    // Edición de datos de Lista desplegable
-    var vistaList = lugar.nombre; 
+    vistaList = lugar.nombre; // Edición de datos de Lista desplegable lugares
 
+    //List<String> listaDesplegableTipo = []; 
+    //var vistaListTipos;
+    
     return Padding(
       padding: EdgeInsets.only(left: 10,right: 10,bottom: 10),
       child: Container(
@@ -119,24 +142,6 @@ class _EventoForm extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 0,),
-              /*TextFormField(
-                initialValue: vistaList,
-                onChanged: ( value ) => vistaList = value,
-                keyboardType: TextInputType.text, // Deja solo teclado numerico 
-                style: const TextStyle(fontSize: 18,color: Colors.white,),
-                textAlign: TextAlign.center,
-                cursorColor: Colors.white,
-                decoration: InputDecorations.authInputDecorationEvento(
-                  hintText: 'Lugar del evento',
-                  labelText: '',
-                ),
-                validator: ( value ) {
-                  if(value == null || value.length < 1){
-                    return 'El lugar es obligatorio';
-                  }
-                }, 
-              ),
-              SizedBox(height: 0,),*/
               Container(
                 margin: EdgeInsets.all(10),
                 width: double.infinity,
@@ -493,4 +498,3 @@ class _ListaDesplegableForm extends State<_ListaDesplegable> {
     );
   }
 }
-

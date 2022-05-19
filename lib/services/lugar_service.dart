@@ -9,6 +9,7 @@ class LugarService extends ChangeNotifier{
   final List<Lugar> lugares =[];
   final String _baseUrl = 'bogo-u-default-rtdb.firebaseio.com';
   bool isLoading = true; 
+  late Lugar lugarSelect;
 
   LugarService(){
     this.loadLugares();

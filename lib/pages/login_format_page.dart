@@ -13,6 +13,8 @@ class LoginFormatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loginForm = Provider.of<LoginFormProvider>(context);
+    final loginFormAuxiliar = Provider.of<LoginFormAuxiliarProvider>(context);
+    loginForm.formKey = loginFormAuxiliar.formKey;
  
     return Form(
       key: loginForm.formKey,
@@ -172,7 +174,7 @@ class _ContainerButton extends StatelessWidget {
             );
             
             if (errorMessage == null) {
-              Navigator.pushNamed(context, 'principal');
+              Navigator.pushReplacementNamed(context, 'principal');
             } else {
               print(errorMessage);
             }

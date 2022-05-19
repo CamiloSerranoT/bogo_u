@@ -13,6 +13,8 @@ class RegisterFormatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final loginForm = Provider.of<LoginFormProvider>(context);
+    final loginFormAuxiliar = Provider.of<LoginFormAuxiliarProvider>(context);
+    loginForm.formKey = loginFormAuxiliar.formKey;
  
     return Form(
       key: loginForm.formKey,

@@ -1,3 +1,4 @@
+import 'package:bogo_u/models/models.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,7 +24,7 @@ class CardContainerGeneral extends StatelessWidget {
           child: Column(
             children: [
               ChangeNotifierProvider(
-                create: ( _ ) {},
+                create: ( _ ) => LoginFormAuxiliarProvider(),
                 child: child,
               ),
             ]

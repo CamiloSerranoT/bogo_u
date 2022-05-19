@@ -11,6 +11,7 @@ class boletasPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final eventoService = Provider.of<EventoService>(context);
     final authService = Provider.of<AuthService>(context, listen: false); 
+    //final boletasService = Provider.of<BoletaService>(context);
     if(eventoService.isLoading) return LoadingPage();
     return Scaffold(
       appBar: AppBar(
@@ -20,7 +21,7 @@ class boletasPage extends StatelessWidget {
               colors: [
                 Colors.black,
                 Color.fromARGB(255, 105, 16, 10),
-                Color.fromARGB(255, 243, 115, 105)
+                Color.fromARGB(255, 243, 115, 105),
               ],
             ),
           ),
