@@ -17,7 +17,7 @@ class BoletaService extends ChangeNotifier{
   Future <List<Boleta>> loadBoleta() async{
     this.isLoading = true;
     notifyListeners();
-    final url = Uri.https(_baseUrl,'usuarios.json');
+    final url = Uri.https(_baseUrl,'boletas.json');
     final respuesta = await http.get(url);
     final Map<String,dynamic> boletaMap = json.decode(respuesta.body);
 

@@ -71,38 +71,20 @@ class _EventoForm extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  late Tipo tipo;
-  
-  @override
-  Widget build(BuildContext context) {
-    final tipoService = Provider.of<TipoService>(context);
-    return _InitEventoForm(tipoService: tipoService);
-  }
-}
-
-
-class _InitEventoForm extends StatelessWidget {
-  _InitEventoForm({
-    Key? key,
-    required this.tipoService,
-  }) : super(key: key);
-
   late Lugar lugar;
   late Tipo tipo;
-  final TipoService tipoService;
   
   @override
   Widget build(BuildContext context) {
     final eventoForm = Provider.of<EventoFormProvider>(context);
     final evento = eventoForm.evento;
     final lugarService = Provider.of<LugarService>(context);
-    print(lugarService.lugares);
+    final tipoService = Provider.of<TipoService>(context);
+    
     // Parte de listado de lugares
+    if(lugarService.isLoading) return LoadingPage();
     List<String> listaDesplegable = []; 
     var vistaList;
-    
-    if(lugarService.isLoading) return LoadingPage();
-
     for(int i = 0; i<lugarService.lugares.length;i++){
       if(lugarService.lugares[i].lugar == evento.lugar){
         lugar = lugarService.lugares[i];
@@ -111,8 +93,17 @@ class _InitEventoForm extends StatelessWidget {
     }
     vistaList = lugar.nombre; // Edición de datos de Lista desplegable lugares
 
-    //List<String> listaDesplegableTipo = []; 
-    //var vistaListTipos;
+    // Parte de listado de tipos
+    if(tipoService.isLoading) return LoadingPage();
+    List<String> listaDesplegableTipo = []; 
+    var vistaListTipos;
+    for(int i = 0; i<tipoService.tipos.length;i++){
+      if(tipoService.tipos[i].tipo == evento.tipo){
+        tipo = tipoService.tipos[i];
+      }
+      listaDesplegableTipo.add(tipoService.tipos[i].nombre);
+    }
+    vistaListTipos = tipo.nombre; // Edición de datos de Lista desplegable lugares
     
     return Padding(
       padding: EdgeInsets.only(left: 10,right: 10,bottom: 10),
@@ -163,6 +154,27 @@ class _InitEventoForm extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 0,),
+              Container(
+                margin: EdgeInsets.all(10),
+                width: double.infinity,
+                alignment: Alignment.center, 
+                decoration: BoxDecoration(
+                  color: Colors.grey.withOpacity(0.1),
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white.withOpacity(0.50),
+                      offset: const Offset(0,0),
+                      blurRadius: 2,
+                    ),
+                  ],
+                ),
+                child: ChangeNotifierProvider(
+                  create: (_) {},
+                  child: _ListaDesplegableTipo(listaDesplegableTipo,vistaListTipos,evento),
+                ),
+              ),
+              SizedBox(height: 20,),
               TextFormField(
                 initialValue: '${evento.valor}',
                 inputFormatters: [
@@ -176,12 +188,12 @@ class _InitEventoForm extends StatelessWidget {
                   }
                 },
                 keyboardType: TextInputType.number, // Deja solo teclado numerico 
-                style: const TextStyle(fontSize: 18,color: Colors.white,),
+                style: const TextStyle(fontSize: 22,color: Colors.white,),
                 textAlign: TextAlign.center,
                 cursorColor: Colors.white,
-                decoration: InputDecorations.authInputDecorationEvento(
+                decoration: InputDecorations.authInputDecorationGeneral(
                   hintText: 'Valor boleta',
-                  labelText: '',
+                  labelText: 'Valor boleta',
                 ),
               ),
               SizedBox(height: 0,),
@@ -451,7 +463,7 @@ class _ListaDesplegable extends StatefulWidget{
   late List<String> listaDesplegable = [];
   late var vistaList;
   late Evento evento;
-  
+
   @override
   State createState() => _ListaDesplegableForm(listaDesplegable, vistaList, evento);
 }
@@ -498,3 +510,63 @@ class _ListaDesplegableForm extends State<_ListaDesplegable> {
     );
   }
 }
+
+class _ListaDesplegableTipo extends StatefulWidget{
+  
+  _ListaDesplegableTipo(
+    this.listaDesplegable,
+    this.vistaList,
+    this.evento,
+  );
+  
+  late List<String> listaDesplegable = [];
+  late var vistaList;
+  late Evento evento;
+  
+  @override
+  State createState() => _ListaDesplegableTipoForm(listaDesplegable, vistaList, evento);
+}
+
+class _ListaDesplegableTipoForm extends State<_ListaDesplegableTipo> {
+  
+  _ListaDesplegableTipoForm(
+    this.listaDesplegable,
+    this.vistaList,
+    this.evento,
+  );
+  
+  late List<String> listaDesplegable = [];
+  late var vistaList;
+  late Evento evento;
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButton<String>(
+      alignment: Alignment.center,
+      icon: Icon(Icons.keyboard_double_arrow_down_outlined,color: Colors.black),
+      items: listaDesplegable.map<DropdownMenuItem<String>>((String value){
+        return DropdownMenuItem<String>( 
+          alignment: Alignment.center,
+          value: value,
+          child: Text(
+            value,
+            style: TextStyle(fontSize: 20,color: Colors.black),
+          ), 
+        ); 
+      }).toList(),
+    
+      onChanged: (value) => {
+        vistaList = value,
+        setState(() {
+          for(int i = 0; i<listaDesplegable.length;i++){
+            if(value == listaDesplegable[i]){
+              evento.tipo = i + 1;
+            }
+          }
+        }),
+        },
+      value: vistaList,
+    );
+  }
+}
+
