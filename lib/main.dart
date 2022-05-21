@@ -4,8 +4,16 @@ import 'package:provider/provider.dart';
 import 'package:bogo_u/services/services.dart';
 import 'package:bogo_u/models/models.dart';
 
-void main() => runApp(AppState());
- 
+import 'package:firebase_core/firebase_core.dart';
+import 'package:bogo_u/pages/pruebas.dart';
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  
+  runApp(AppState());
+}
+
 class AppState extends StatelessWidget {
   const AppState({ Key? key }) : super(key: key);
 
@@ -32,7 +40,7 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
       title: 'Bogo_U',
       debugShowCheckedModeBanner: false,
-      initialRoute: 'principal',
+      initialRoute: 'prueba',
       routes: {
         'login': ( _ ) => LoginPage(),
         'principal': ( _ ) => principalPage(),
@@ -41,6 +49,7 @@ class MyApp extends StatelessWidget {
         'evento' : ( _ ) => EventoPage(),
         'boletas' : ( _ ) => boletasPage(),
         'configuraciones' : ( _ ) => configuracionesPage(),
+        'prueba': ( _ ) => MainPageNew(),
       },
     );
   }

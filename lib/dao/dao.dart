@@ -1,0 +1,1 @@
+export 'package:bogo_u/dao/evento_dao.dart';

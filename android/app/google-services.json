@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "566003651458",
+    "firebase_url": "https://bogo-u-default-rtdb.firebaseio.com",
+    "project_id": "bogo-u",
+    "storage_bucket": "bogo-u.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:566003651458:android:0e2a961a871bdb8fe3f59b",
+        "android_client_info": {
+          "package_name": "com.example.bogo_u"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "566003651458-n6kdc1cgm3is9buqfhintck1modmv4vk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrckQIWQud5piXW-WcuQlNtT-ABFjnQ0I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "566003651458-n6kdc1cgm3is9buqfhintck1modmv4vk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

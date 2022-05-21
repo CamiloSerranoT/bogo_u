@@ -14,6 +14,7 @@ class EventoService extends ChangeNotifier{
   EventoService(){
     this.loadEventos();
   }
+  
   Future <List<Evento>> loadEventos() async{
     this.isLoading = true;
     notifyListeners();
