@@ -35,7 +35,7 @@ class Evento {
     String? imagen;
     String? id;
 
-    factory Evento.fromJson(Map<String, dynamic> json) => Evento(
+    factory Evento.fromJson(Map<dynamic, dynamic> json) => Evento(
         anual: json["anual"],
         apertura: json["apertura"],
         descripcion: json["descripcion"],
@@ -50,7 +50,7 @@ class Evento {
         imagen: json["imagen"] == null ? null : json["imagen"],
     );
 
-    Map<String, dynamic> toJson() => {
+    Map<dynamic, dynamic> toJson() => {
         "anual": anual,
         "apertura": apertura,
         "descripcion": descripcion,

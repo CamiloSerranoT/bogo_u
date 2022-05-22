@@ -72,7 +72,7 @@ class _EventoForm extends StatelessWidget {
   }) : super(key: key);
 
   late Lugar lugar;
-  late Tipo tipo = Tipo(estado: true, nombre: '', tipo: 0);
+  late Tipo tipo;
   
   @override
   Widget build(BuildContext context) {
@@ -150,7 +150,7 @@ class _EventoForm extends StatelessWidget {
                 ),
                 child: ChangeNotifierProvider(
                   create: (_) {},
-                  child: _ListaDesplegable(listaDesplegable,vistaList,evento, lugar),
+                  child: _ListaDesplegable(listaDesplegable,vistaList,evento),
                 ),
               ),
               SizedBox(height: 0,),
@@ -180,7 +180,13 @@ class _EventoForm extends StatelessWidget {
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+$'))
                 ],
-                onChanged: ( value ) => evento.valor = int.parse(value),
+                onChanged: ( value ) {
+                  if(int.tryParse(value) == null){
+                    evento.valor = 0;
+                  }else{
+                    evento.valor = int.parse(value);
+                  }
+                },
                 keyboardType: TextInputType.number, // Deja solo teclado numerico 
                 style: const TextStyle(fontSize: 22,color: Colors.white,),
                 textAlign: TextAlign.center,
@@ -190,7 +196,7 @@ class _EventoForm extends StatelessWidget {
                   labelText: 'Valor boleta',
                 ),
               ),
-              /*SizedBox(height: 0,),
+              SizedBox(height: 0,),
               TextFormField(
                 initialValue: '${lugar.direccion}',
                 onChanged: ( value ) {
@@ -213,15 +219,21 @@ class _EventoForm extends StatelessWidget {
                     return 'La dirección es obligatoria';
                   }
                 }, 
-              ),*/
-              SizedBox(height: 30,),
+              ),
+              SizedBox(height: 20,),
               Wrap(
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * 0.4,
                     child: TextFormField(
                       initialValue: '${evento.apertura}',
-                      onChanged: ( value ) => evento.apertura = value,
+                      onChanged: ( value ) {
+                        if(int.tryParse(value) == null){
+                          evento.valor = 0;
+                        }else{
+                          evento.valor = int.parse(value);
+                        }
+                      },
                       keyboardType: TextInputType.text, // Deja solo teclado numerico 
                       style: const TextStyle(fontSize: 18,color: Colors.white,),
                       textAlign: TextAlign.center,
@@ -242,7 +254,13 @@ class _EventoForm extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.4,
                     child: TextFormField(
                       initialValue: '${evento.inicio}',
-                      onChanged: ( value ) => evento.inicio = value,
+                      onChanged: ( value ) {
+                        if(int.tryParse(value) == null){
+                          evento.valor = 0;
+                        }else{
+                          evento.valor = int.parse(value);
+                        }
+                      },
                       keyboardType: TextInputType.text, // Deja solo teclado numerico 
                       style: const TextStyle(fontSize: 18,color: Colors.white,),
                       textAlign: TextAlign.center,
@@ -269,7 +287,13 @@ class _EventoForm extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.25,
                       child: TextFormField(
                         initialValue: '${evento.dias}',
-                        onChanged: ( value ) => evento.dias = value,
+                        onChanged: ( value ) {
+                          if(int.tryParse(value) == null){
+                            evento.valor = 0;
+                          }else{
+                            evento.valor = int.parse(value);
+                          }
+                        },
                         keyboardType: TextInputType.text, // Deja solo teclado numerico 
                         style: const TextStyle(fontSize: 15,color: Colors.white,),
                         textAlign: TextAlign.center,
@@ -290,7 +314,13 @@ class _EventoForm extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.25,
                       child: TextFormField(
                         initialValue: '${evento.mes}',
-                        onChanged: ( value ) => evento.mes = value,
+                        onChanged: ( value ) {
+                          if(int.tryParse(value) == null){
+                            evento.valor = 0;
+                          }else{
+                            evento.valor = int.parse(value);
+                          }
+                        },
                         keyboardType: TextInputType.text, // Deja solo teclado numerico 
                         style: const TextStyle(fontSize: 15,color: Colors.white,),
                         textAlign: TextAlign.center,
@@ -311,7 +341,13 @@ class _EventoForm extends StatelessWidget {
                       width: MediaQuery.of(context).size.width * 0.25,
                       child: TextFormField(
                         initialValue: '${evento.anual}',
-                        onChanged: ( value ) => evento.anual = value,
+                        onChanged: ( value ) {
+                          if(int.tryParse(value) == null){
+                            evento.valor = 0;
+                          }else{
+                            evento.valor = int.parse(value);
+                          }
+                        },
                         keyboardType: TextInputType.text, // Deja solo teclado numerico 
                         style: const TextStyle(fontSize: 15,color: Colors.white,),
                         textAlign: TextAlign.center,
@@ -333,7 +369,13 @@ class _EventoForm extends StatelessWidget {
               SizedBox(height: 20,),
               TextFormField(
                 initialValue: '${evento.descripcion}',
-                onChanged: ( value ) => evento.descripcion = value,
+                onChanged: ( value ) {
+                  if(int.tryParse(value) == null){
+                    evento.valor = 0;
+                  }else{
+                    evento.valor = int.parse(value);
+                  }
+                },
                 keyboardType: TextInputType.text, // Deja solo teclado numerico 
                 style: const TextStyle(fontSize: 16,color: Colors.white,),
                 textAlign: TextAlign.center,
@@ -416,16 +458,14 @@ class _ListaDesplegable extends StatefulWidget{
     this.listaDesplegable,
     this.vistaList,
     this.evento,
-    this.lugar,
   );
   
   late List<String> listaDesplegable = [];
   late var vistaList;
   late Evento evento;
-  late Lugar lugar;
 
   @override
-  State createState() => _ListaDesplegableForm(listaDesplegable, vistaList, evento,lugar);
+  State createState() => _ListaDesplegableForm(listaDesplegable, vistaList, evento);
 }
 
 class _ListaDesplegableForm extends State<_ListaDesplegable> {
@@ -434,75 +474,41 @@ class _ListaDesplegableForm extends State<_ListaDesplegable> {
     this.listaDesplegable,
     this.vistaList,
     this.evento,
-    this.lugar,
   );
   
   late List<String> listaDesplegable = [];
   late var vistaList;
   late Evento evento;
-  late Lugar lugar;
-  late String dir = '';
 
   @override
   Widget build(BuildContext context) {
-    final lugarService = Provider.of<LugarService>(context);
-    return Container(
-      width: double.infinity,
-      child: Column(
-        children: [
-          DropdownButton<String>(
-            alignment: Alignment.center,
-            icon: Icon(Icons.keyboard_double_arrow_down_outlined,color: Colors.black),
-            items: listaDesplegable.map<DropdownMenuItem<String>>((String value){
-              return DropdownMenuItem<String>( 
-                alignment: Alignment.center,
-                value: value,
-                child: Text(
-                  value,
-                  style: TextStyle(fontSize: 20,color: Colors.black),
-                ), 
-              ); 
-            }).toList(),
-          
-            onChanged: (value) => {
-              vistaList = value,
-              setState(() {
-                for(int i = 0; i<listaDesplegable.length;i++){
-                  if(value == listaDesplegable[i]){
-                    evento.lugar = i + 1;
-                    lugar = lugarService.lugares[i];
-                  }
-                }
-              }),
-            },
-            value: vistaList,
-          ),
-          Container(
-            margin: EdgeInsets.all(20),
-            width: double.infinity,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.1),
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.white.withOpacity(0.3),
-                      offset: const Offset(0,0),
-                      blurRadius: 2,
-                    ),
-                  ],
-                ),
-            child: Text(
-              lugar.direccion,
-              style: const TextStyle(fontSize: 18,color: Colors.black,),
-            ),
-          ),
-        ],
-      ),
+    return DropdownButton<String>(
+      alignment: Alignment.center,
+      icon: Icon(Icons.keyboard_double_arrow_down_outlined,color: Colors.black),
+      items: listaDesplegable.map<DropdownMenuItem<String>>((String value){
+        return DropdownMenuItem<String>( 
+          alignment: Alignment.center,
+          value: value,
+          child: Text(
+            value,
+            style: TextStyle(fontSize: 20,color: Colors.black),
+          ), 
+        ); 
+      }).toList(),
+    
+      onChanged: (value) => {
+        vistaList = value,
+        setState(() {
+          for(int i = 0; i<listaDesplegable.length;i++){
+            if(value == listaDesplegable[i]){
+              evento.lugar = i + 1;
+            }
+          }
+        }),
+        },
+      value: vistaList,
     );
   }
-
-
 }
 
 class _ListaDesplegableTipo extends StatefulWidget{

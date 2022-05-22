@@ -18,7 +18,7 @@ class CardEvento extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20.0),
       child: Container(
-        margin: EdgeInsets.only(top: 20, bottom: 5),
+        margin: EdgeInsets.only(top: 20, bottom: 10),
         width: double.infinity,
         height: 400,
         decoration: _cardBorders(),

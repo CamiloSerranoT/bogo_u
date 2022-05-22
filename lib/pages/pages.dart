@@ -8,6 +8,7 @@ export 'package:bogo_u/pages/boletas_page.dart';
 export 'package:bogo_u/pages/configuraciones_page.dart';
 export 'package:bogo_u/pages/login_format_page.dart';
 export 'package:bogo_u/pages/register_format_page.dart';
+export 'package:bogo_u/pages/crear_evento_page.dart';
 
 /*
 export 'package:bogo_u/pages/configuraciones_act_page.dart';

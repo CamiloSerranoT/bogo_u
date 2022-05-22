@@ -32,4 +32,22 @@ class EventoService extends ChangeNotifier{
     notifyListeners();
     return eventos;
   }
+
+  Future <List<Evento>> actualizar() async{
+    this.isLoading = true;
+    notifyListeners();
+    final url = Uri.https(_baseUrl,'eventos.json');
+    final respuesta = await http.get(url);
+    final Map<String,dynamic> eventosMap = json.decode(respuesta.body);
+
+    eventosMap.forEach((key, value) {
+      final eventoTemp = Evento.fromJson(value);
+      eventoTemp.id = key;
+      this.eventos.add(eventoTemp);
+    });
+
+    isLoading = false;
+    notifyListeners();
+    return eventos;
+  }
 }

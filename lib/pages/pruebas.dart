@@ -1,3 +1,4 @@
+import 'package:bogo_u/models/evento.dart';
 import 'package:bogo_u/models/evento_prueba.dart';
 import 'package:bogo_u/pages/evento_widget_page.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,7 @@ class MainPageNewState extends State<MainPageNew> {
 
   void _envierEvento() {
     if(_puedoEnviar()) {
-      final evento = EventoPrueba(
+      final evento = Evento(
         anual: 'anual',
         apertura: 'apertura', 
         descripcion: 'descripcion', 
@@ -84,7 +85,6 @@ class MainPageNewState extends State<MainPageNew> {
         nombre: eventoController.text, 
         tipo: 1, 
         valor: 20000,
-        imagen: '',
         id: '',
       );
       widget.eventoDAO.guardarEvento(evento);

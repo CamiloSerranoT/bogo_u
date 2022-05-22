@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
       title: 'Bogo_U',
       debugShowCheckedModeBanner: false,
-      initialRoute: 'prueba',
+      initialRoute: 'principal',
       routes: {
         'login': ( _ ) => LoginPage(),
         'principal': ( _ ) => principalPage(),
@@ -49,6 +49,7 @@ class MyApp extends StatelessWidget {
         'evento' : ( _ ) => EventoPage(),
         'boletas' : ( _ ) => boletasPage(),
         'configuraciones' : ( _ ) => configuracionesPage(),
+        'crearevento': ( _ ) => CrearEventoPage(),
         'prueba': ( _ ) => MainPageNew(),
       },
     );
