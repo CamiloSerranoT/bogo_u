@@ -34,7 +34,7 @@ class LoginPage extends StatelessWidget {
             children: [
               SizedBox(height: 80,),
               /*ChangeNotifierProvider(
-                create: ( _ ) => LoginFormProvider(),
+                create: ( _ ) => LoginFormAuxiliarLoginProvider(),
                 child: CardContainerGeneral(child: LoginFormatPage()),
               ),*/
               CardContainerGeneral(child: LoginFormatPage()),

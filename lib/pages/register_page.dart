@@ -1,4 +1,4 @@
-import 'package:bogo_u/models/login_Form.dart';
+import 'package:bogo_u/models/models.dart';
 import 'package:bogo_u/pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:bogo_u/widgets/widgets.dart';
@@ -33,7 +33,7 @@ class RegisterPage extends StatelessWidget {
             children: [
               SizedBox(height: 80,),
               /*ChangeNotifierProvider(
-                create: ( _ ) => LoginFormProvider(),
+                create: ( _ ) => LoginFormAuxiliarProvider(),
                 child: CardContainerGeneral(child: RegisterFormatPage(),),
               ),*/
               CardContainerGeneral(child: RegisterFormatPage(),),

@@ -2,6 +2,7 @@ import 'package:bogo_u/dao/dao.dart';
 import 'package:bogo_u/models/models.dart';
 import 'package:bogo_u/pages/pages.dart';
 import 'package:bogo_u/services/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:bogo_u/ui/uis.dart';
 import 'package:flutter/services.dart';
@@ -17,9 +18,6 @@ class CrearEventoPage extends StatefulWidget {
 }
 
 class CrearEventoFormPage extends State<CrearEventoPage> {
-
-  ScrollController _scrollController = ScrollController();
-  TextEditingController eventoController = TextEditingController();
 
   Evento evento = Evento(
       anual: '', 
@@ -73,29 +71,7 @@ class CrearEventoFormPage extends State<CrearEventoPage> {
           ],
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      //floatingActionButton: _AgregarButton(),
     );
-  }
-
-  _AgregarButton() {
-    @override
-    Widget build(BuildContext context) {
-      return FloatingActionButton(
-        backgroundColor: Colors.red, 
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: Icon(
-          Icons.save_outlined,
-          size: 45,
-          color: Colors.white,
-        ),
-        onPressed: (){
-
-        },
-      );
-    }
   }
 }
 
@@ -166,7 +142,7 @@ class _EventoForm extends StatelessWidget {
                         onChanged: ( value ) => evento.lugar = int.parse(value),
                         validator: ( value ) {
                           if(value == null || value.length < 1){
-                            return 'El nombre es obligatorio';
+                            return 'El lugar es obligatorio';
                           }
                         },
                         style: const TextStyle(fontSize: 18,color: Colors.white,),
@@ -183,7 +159,7 @@ class _EventoForm extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 5.0),
                       child: IconButton(
                         onPressed: () {
-                          
+                          Navigator.pushNamed(context, 'crearlugar');
                         }, 
                         icon: Icon(
                           Icons.add,
@@ -193,7 +169,7 @@ class _EventoForm extends StatelessWidget {
                       ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 10.0),
+                    padding: const EdgeInsets.only(right: 5.0),
                       child: IconButton(
                         onPressed: () {
                           final snackBar = SnackBar(
@@ -234,7 +210,7 @@ class _EventoForm extends StatelessWidget {
                         cursorColor: Colors.white,
                         validator: ( value ) {
                           if(value == null || value.length < 1){
-                            return 'El nombre es obligatorio';
+                            return 'El tipo es obligatorio';
                           }
                         },
                         decoration: InputDecorations.authInputDecorationGeneral(
@@ -245,7 +221,20 @@ class _EventoForm extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: const EdgeInsets.only(left: 5.0),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'creartipo');
+                        }, 
+                        icon: Icon(
+                          Icons.add,
+                          size: 35,
+                          color: Colors.white,
+                        ),
+                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5.0),
                     child: IconButton(
                       onPressed: () {
                         final snackBar = SnackBar(
@@ -454,9 +443,7 @@ class _EventoForm extends StatelessWidget {
                   ),
                   onPressed: (){
                     if(_puedoEnviar()) {
-                      print(evento.dias);
-                      print(evento.valor);
-                      _envierEvento();
+                      _enviarEvento();
                       Navigator.pushNamed(context, 'principal');
                     }
                   },
@@ -474,7 +461,7 @@ class _EventoForm extends StatelessWidget {
     return true;
   }
 
-  void _envierEvento() {
+  void _enviarEvento() {
     eventoDAO.guardarEvento(evento);
     //eventoController.clear();
   }

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 Map<String, Usuario> usuarioFromJson(String str) => Map.from(json.decode(str)).map((k, v) => MapEntry<String, Usuario>(k, Usuario.fromJson(v)));
 
-String usuarioToJson(Map<String, Usuario> data) => json.encode(Map.from(data).map((k, v) => MapEntry<String, dynamic>(k, v.toJson())));
+String usuarioToJson(Map<String, Usuario> data) => json.encode(Map.from(data).map((k, v) => MapEntry<dynamic, dynamic>(k, v.toJson())));
 
 class Usuario {
     Usuario({
@@ -25,7 +25,7 @@ class Usuario {
     String? imagen;
     String? id;
 
-    factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
+    factory Usuario.fromJson(Map<dynamic, dynamic> json) => Usuario(
         apellidos: json["apellidos"],
         clave: json["clave"],
         correo: json["correo"],
@@ -35,7 +35,7 @@ class Usuario {
         telefono: json["telefono"],
     );
 
-    Map<String, dynamic> toJson() => {
+    Map<dynamic, dynamic> toJson() => {
         "apellidos": apellidos,
         "clave": clave,
         "correo": correo,

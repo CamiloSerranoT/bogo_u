@@ -53,7 +53,7 @@ class _UsuarioForm extends StatelessWidget {
     final usuarioForm = Provider.of<UsuarioFormProvider>(context);
     final usuario = usuarioForm.usuario;
     return Padding(
-      padding: EdgeInsets.only(left: 10,right: 10,bottom: 10),
+      padding: EdgeInsets.only(left: 10,right: 10,bottom: 20, top: 5),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
         width: double.infinity,
@@ -61,7 +61,9 @@ class _UsuarioForm extends StatelessWidget {
         child: Form(
           child: Column(
             children: [
+              SizedBox(height: 10,),
               ImageUsuario(url: usuario.imagen),
+              SizedBox(height: 10,),
               TextFormField(
                 initialValue: usuario.nombres,
                 keyboardType: TextInputType.text,
@@ -79,7 +81,7 @@ class _UsuarioForm extends StatelessWidget {
                   labelText: 'Nombres',
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 25,),
               TextFormField(
                 initialValue: usuario.apellidos,
                 keyboardType: TextInputType.text,
@@ -97,7 +99,7 @@ class _UsuarioForm extends StatelessWidget {
                   labelText: 'Apellidos',
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 25,),
               TextFormField(
                 initialValue: usuario.correo,
                 keyboardType: TextInputType.text,
@@ -117,7 +119,7 @@ class _UsuarioForm extends StatelessWidget {
                   labelText: 'Correo',
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 25,),
               TextFormField(
                 initialValue: '${usuario.telefono}',
                 onChanged: ( value ) => usuario.telefono = int.parse(value),
@@ -135,13 +137,13 @@ class _UsuarioForm extends StatelessWidget {
                   labelText: 'Telefono',
                 ),
               ),
-              SizedBox(height: 15,),
+              /*SizedBox(height: 15,),
               SwitchListTile.adaptive(
                 value: true,
                 title: Text('Disponible',style: TextStyle(color: Colors.white),),
                 activeColor: Colors.white, 
                 onChanged: usuarioForm.updateEstado,
-              ),
+              ),*/
               SizedBox(height: 30,),
             ],
           )

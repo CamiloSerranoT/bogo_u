@@ -12,4 +12,7 @@ class LugarDAO {
 
   Query getLugar() => lugarRef;
 
+  Future<void> eliminarLugar(Lugar lugar){
+    return lugarRef.child(lugarRef.key).set(lugar);
+  }
 }

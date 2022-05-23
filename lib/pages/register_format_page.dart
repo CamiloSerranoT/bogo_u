@@ -166,22 +166,41 @@ class _ContainerButton extends StatelessWidget {
           ? null
           : () async {
             FocusScope.of(context).unfocus(); //inhabilita el teclado
-              final authService =
-                  Provider.of<AuthService>(context, listen: false);
-              if (!loginForm.isValidForm())
-                return; // si no es valido retorna
-              loginForm.isLoading = true;
-              //await Future.delayed(Duration(seconds: 2));
-              final String? errorMessage = await authService.createUser(
-                  loginForm.email, loginForm.password);
-              if (errorMessage == null) {
-                Navigator.pushReplacementNamed(context, 'principal');
-              } else {
-                print(errorMessage);
-                loginForm.isLoading = false;
+            final authService = Provider.of<AuthService>(context, listen: false);
+            if (!loginForm.isValidForm())
+              return; // si no es valido retorna
+            loginForm.isLoading = true;
+            //await Future.delayed(Duration(seconds: 2));
+            final String? errorMessage = await authService.createUser(
+              loginForm.email, loginForm.password
+            );
+            if (errorMessage == null) {
+              Navigator.pushReplacementNamed(context, 'crearusuario');
+            } else {
+              if(errorMessage == 'EMAIL_EXISTS'){
+                ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nEl correo ya se encuentra registrado, por favor utilice uno diferente.'));
               }
+              print(errorMessage);
+            }
+            loginForm.isLoading = false;
           }
       ),
     );
+  }
+
+  SnackBar _Error(fraseo){    
+    final snackBar = SnackBar(
+        backgroundColor: Colors.white,
+        content: Text(
+          fraseo,
+          style: TextStyle(fontSize: 15,color: Colors.black,),
+        ),
+        action: SnackBarAction(
+          label: 'Ocultar',
+          textColor: Colors.red,
+          onPressed: () {},
+        ),
+      );
+    return snackBar;
   }
 }

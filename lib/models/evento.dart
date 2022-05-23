@@ -2,7 +2,7 @@ import 'dart:convert';
 
 Map<String, Evento> eventoFromJson(String str) => Map.from(json.decode(str)).map((k, v) => MapEntry<String, Evento>(k, Evento.fromJson(v)));
 
-String eventoToJson(Map<String, Evento> data) => json.encode(Map.from(data).map((k, v) => MapEntry<String, dynamic>(k, v.toJson())));
+String eventoToJson(Map<String, Evento> data) => json.encode(Map.from(data).map((k, v) => MapEntry<dynamic, dynamic>(k, v.toJson())));
 
 class Evento {
     Evento({

@@ -56,7 +56,7 @@ class _EventoDetails extends StatelessWidget {
   final String nombreEvento;
   final int lugarEvento;
   final String FechaEvento;
-  late String lugarEventoString;
+  late String lugarEventoString = '';
 
   _EventoDetails({
     Key? key,

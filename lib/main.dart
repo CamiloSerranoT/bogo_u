@@ -5,7 +5,6 @@ import 'package:bogo_u/services/services.dart';
 import 'package:bogo_u/models/models.dart';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:bogo_u/pages/pruebas.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -40,7 +39,7 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
       title: 'Bogo_U',
       debugShowCheckedModeBanner: false,
-      initialRoute: 'principal',
+      initialRoute: 'register',
       routes: {
         'login': ( _ ) => LoginPage(),
         'principal': ( _ ) => principalPage(),
@@ -50,7 +49,9 @@ class MyApp extends StatelessWidget {
         'boletas' : ( _ ) => boletasPage(),
         'configuraciones' : ( _ ) => configuracionesPage(),
         'crearevento': ( _ ) => CrearEventoPage(),
-        'prueba': ( _ ) => MainPageNew(),
+        'crearlugar': ( _ ) => CrearLugarPage(),
+        'creartipo': ( _ ) => CrearTipoPage(),
+        'crearusuario': ( _ ) => CrearUsuarioPage(),
       },
     );
   }
