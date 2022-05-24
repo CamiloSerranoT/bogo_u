@@ -135,20 +135,6 @@ class _EventoDetails extends StatelessWidget {
     );
   }
 
-  BoxDecoration _buildBoxDecoration() => BoxDecoration(
-    //color: Colors.indigo,
-    borderRadius: BorderRadius.only(topLeft: Radius.circular(0), bottomRight: Radius.circular(0)),
-    gradient: LinearGradient(
-      colors: [
-      //  Colors.indigo,
-      //  Colors.red
-        Colors.black,
-        Color.fromARGB(255, 105, 16, 10),
-        Color.fromARGB(255, 243, 115, 105),
-      ],
-    ), 
-  );
-
   BoxDecoration _buildBoxDecorationGeneral() => BoxDecoration(
     //color: Colors.indigo,
     borderRadius: BorderRadius.only(topLeft: Radius.circular(25), bottomRight: Radius.circular(25)),
@@ -164,8 +150,8 @@ class _EventoDetails extends StatelessWidget {
   );
 
   BoxDecoration _buildBoxDecorationToolTip() => BoxDecoration(
-    //borderRadius: BorderRadius.only(topLeft: Radius.circular(25), bottomRight: Radius.circular(25)),
-    borderRadius: BorderRadius.circular(10),
+    borderRadius: BorderRadius.only(topLeft: Radius.circular(30), bottomRight: Radius.circular(30)),
+    //borderRadius: BorderRadius.circular(10),
     gradient: LinearGradient(
       colors: [
       //  Colors.indigo,
@@ -175,6 +161,13 @@ class _EventoDetails extends StatelessWidget {
         Color.fromARGB(255, 243, 115, 105),
       ],
     ), 
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black.withOpacity(0.6),
+        blurRadius: 10,
+        spreadRadius: 5,
+      ),
+    ],
   );
 }
 

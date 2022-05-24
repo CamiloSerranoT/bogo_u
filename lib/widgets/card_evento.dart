@@ -73,6 +73,8 @@ class _EventoDetails extends StatelessWidget {
     final tipoService = Provider.of<TipoService>(context);
     // ignore: unused_local_variable
     final usuarioService = Provider.of<UsuarioService>(context);
+    // ignore: unused_local_variable
+    final boletasService = Provider.of<BoletaService>(context);
 
     for(int i = 0; i<lugarService.lugares.length;i++){
       if(lugarService.lugares[i].lugar == lugarEvento){

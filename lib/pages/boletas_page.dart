@@ -12,6 +12,7 @@ class boletasPage extends StatefulWidget {
   
   boletasPage({ Key? key }) : super(key: key);
   final eventoDAO = EventoDAO();
+  final boletaDAO = BoletaDAO();
 
   @override
   Boletas createState() => Boletas();
@@ -80,6 +81,9 @@ class Boletas extends State<boletasPage> {
 
   Widget _getLista() {
     final eventoService = Provider.of<EventoService>(context);
+    final boletaService = Provider.of<BoletaService>(context);
+    final datos = Provider.of<LoginFormProvider>(context);
+    bool estado = false;
     return Expanded(
       child: FirebaseAnimatedList(
         controller: _scrollController,
@@ -88,16 +92,29 @@ class Boletas extends State<boletasPage> {
           final json=snapshot.value as Map<dynamic,dynamic>;
           final evento=Evento.fromJson(json);
           
-          return MaterialButton(
-            disabledTextColor: Colors.black87,
-            onPressed: (){
-              eventoService.eventoSelect = evento;
-              Navigator.pushNamed(context, 'evento');
-            },
-            child: CardBoletas(
-              evento: evento,
-            ),
-          );
+          estado = false;
+          for(int i=0;i<boletaService.boletas.length;i++){
+            if(evento.codigo == boletaService.boletas[i].idevento){
+              if(datos.email == boletaService.boletas[i].idusuario){
+                estado = true;
+              }
+            }
+          }
+          
+          if(estado == true){
+            return MaterialButton(
+              disabledTextColor: Colors.black87,
+              onPressed: (){
+                eventoService.eventoSelect = evento;
+                Navigator.pushNamed(context, 'evento');
+              },
+              child: CardBoletas(
+                evento: evento,
+              ),
+            );
+          }else{
+             return Container();
+          }
         },
       )
     );

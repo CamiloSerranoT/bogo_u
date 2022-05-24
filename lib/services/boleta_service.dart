@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class BoletaService extends ChangeNotifier{
 
-  final List<Boleta> boletas =[];
+  List<Boleta> boletas =[];
   final String _baseUrl = 'bogo-u-default-rtdb.firebaseio.com';
   bool isLoading = true; 
   late Boleta boletasSelect;
@@ -31,4 +31,21 @@ class BoletaService extends ChangeNotifier{
     notifyListeners();
     return boletas;
   }
+
+  Future <List<Boleta>> actualizar() async{
+    List<Boleta> boletasNew =[];
+    this.boletas = boletasNew;
+    final url = Uri.https(_baseUrl,'boletas.json');
+    final respuesta = await http.get(url);
+    final Map<String,dynamic> boletaMap = json.decode(respuesta.body);
+
+    boletaMap.forEach((key, value) {
+      final boletaTemp = Boleta.fromJson(value);
+      boletaTemp.id = key;
+      this.boletas.add(boletaTemp);
+    });
+    notifyListeners();
+    return boletas;
+  }
 }
+

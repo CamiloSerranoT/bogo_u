@@ -1,3 +1,4 @@
+import 'package:bogo_u/dao/dao.dart';
 import 'package:bogo_u/models/models.dart';
 import 'package:bogo_u/pages/pages.dart';
 import 'package:bogo_u/providers/providers.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:bogo_u/ui/uis.dart';
 import 'package:bogo_u/widgets/widgets.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 
 class EventoPage extends StatelessWidget {
@@ -31,6 +33,28 @@ class _EventoPageBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context, listen: false); 
+    final datos = Provider.of<LoginFormProvider>(context);
+    final usuarioService = Provider.of<UsuarioService>(context);
+    final boletasService = Provider.of<BoletaService>(context);
+
+    for(int i = 0; i<usuarioService.usuarios.length;i++){
+      if(usuarioService.usuarios[i].correo == datos.correo){
+        usuarioService.usuariosSelect = usuarioService.usuarios[i].copy();
+      }
+    }
+
+    final eventoService = Provider.of<EventoService>(context);
+    final boletaDAO = BoletaDAO(); 
+
+    final eventoForm = Provider.of<EventoFormProvider>(context);
+    final evento = eventoForm.evento;
+
+    Boleta boleta = Boleta(
+      idevento: evento.codigo,
+      idusuario: usuarioService.usuariosSelect.correo,
+    );
+
     return Scaffold(
       body:SingleChildScrollView(
         child: Column(
@@ -56,14 +80,72 @@ class _EventoPageBody extends StatelessWidget {
                 )
               ],  
             ),
-            _EventoForm()
+            _EventoForm(),
           ],
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-      floatingActionButton: _AgregarButton(),
+      floatingActionButton: SpeedDial(
+        animatedIcon: AnimatedIcons.menu_close,
+        childMargin: EdgeInsets.all(10),
+        backgroundColor: Colors.red,
+        overlayOpacity: 0.3,
+        closeManually: false,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        children:[
+          SpeedDialChild(
+            child: Icon(Icons.save_outlined,size: 30,),
+            //backgroundColor: Colors.red,
+            label: 'Guardar',    
+            onTap: (){
+              
+            }  
+          ),
+          SpeedDialChild(
+            child:Icon(Icons.add,size: 30,),
+            label: 'Agregar',
+            onTap: (){
+              bool estado = true;
+              for(int i = 0;i<boletasService.boletas.length;i++){
+                if(boletasService.boletas[i].idevento == evento.codigo){
+                  if(boletasService.boletas[i].idusuario == usuarioService.usuariosSelect.correo){
+                    estado = false;
+                  }
+                }
+              }
+
+              if(estado == true){
+                boletaDAO.guardarBoletas(boleta);
+                boletasService.actualizar();
+                Navigator.pushNamed(context, 'principal');
+              }else{
+                ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nYa tiene vinculado este evento'));
+              }
+            },
+          ),
+        ],
+      ),
     );
   }
+
+  SnackBar _Error(fraseo){    
+    final snackBar = SnackBar(
+        backgroundColor: Colors.white,
+        content: Text(
+          fraseo,
+          style: TextStyle(fontSize: 15,color: Colors.black,),
+        ),
+        action: SnackBarAction(
+          label: 'Ocultar',
+          textColor: Colors.red,
+          onPressed: () {},
+        ),
+      );
+    return snackBar;
+  }
+
 }
 
 class _EventoForm extends StatelessWidget {
@@ -280,7 +362,7 @@ class _EventoForm extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 15,),
+              SizedBox(height: 20,),
               TextFormField(
                 initialValue: '${evento.descripcion}',
                 onChanged: ( value ) => evento.descripcion = value,
@@ -596,7 +678,7 @@ class _ListaDesplegableMesForm extends State<_ListaDesplegableMes> {
           SizedBox(height: 10,),
           Text(
             'Fecha del evento',
-            style: const TextStyle(fontSize: 18,color: Colors.white,),
+            style: const TextStyle(fontSize: 22,color: Colors.white,fontWeight: FontWeight.bold,),
           ),
           SizedBox(height: 5,),
           Row(
@@ -676,9 +758,7 @@ class _ListaDesplegableMesForm extends State<_ListaDesplegableMes> {
             ],
           ),
         ],
-        
       ),
     );
   }
 }
-
