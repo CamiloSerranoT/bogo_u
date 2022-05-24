@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class EventoService extends ChangeNotifier{
 
-  final List<Evento> eventos =[];
+  List<Evento> eventos =[];
   final String _baseUrl = 'bogo-u-default-rtdb.firebaseio.com';
   bool isLoading = true; 
   late Evento eventoSelect;
@@ -34,8 +34,8 @@ class EventoService extends ChangeNotifier{
   }
 
   Future <List<Evento>> actualizar() async{
-    this.isLoading = true;
-    notifyListeners();
+    List<Evento> eventosNew =[];
+    this.eventos = eventosNew;
     final url = Uri.https(_baseUrl,'eventos.json');
     final respuesta = await http.get(url);
     final Map<String,dynamic> eventosMap = json.decode(respuesta.body);
@@ -45,8 +45,6 @@ class EventoService extends ChangeNotifier{
       eventoTemp.id = key;
       this.eventos.add(eventoTemp);
     });
-
-    isLoading = false;
     notifyListeners();
     return eventos;
   }

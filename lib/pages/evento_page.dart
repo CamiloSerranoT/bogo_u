@@ -105,6 +105,24 @@ class _EventoForm extends StatelessWidget {
     }
     vistaListTipos = tipo.nombre; // Edición de datos de Lista desplegable lugares
     
+    List<String> listaDesplegableMes = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+    var vistaListMes = evento.mes;
+    String vistaListMesAux = evento.mes;
+
+    List<String> listaDesplegableAnual = [];
+    List<int> fechas = [2022,2040]; 
+    for(int i=0;i<=fechas[1]-fechas[0];i++){
+      listaDesplegableAnual.add('${fechas[0]+i}');
+    }
+    var vistaListAnual = evento.anual;
+    
+    List<String> listaDesplegableDia = [];
+    for(int i=1;i<=31;i++){
+      listaDesplegableDia.add('${i}');
+    }
+    var vistaListDia = evento.dias;
+    late List<int> listaDesplegableDiasCont = [31,28,31,30,31,30,31,31,30,31,30,31];
+
     return Padding(
       padding: EdgeInsets.only(left: 10,right: 10,bottom: 10),
       child: Container(
@@ -190,30 +208,6 @@ class _EventoForm extends StatelessWidget {
                   labelText: 'Valor boleta',
                 ),
               ),
-              /*SizedBox(height: 0,),
-              TextFormField(
-                initialValue: '${lugar.direccion}',
-                onChanged: ( value ) {
-                  if(int.tryParse(value) == null){
-                    evento.valor = 0;
-                  }else{
-                    evento.valor = int.parse(value);
-                  }
-                },
-                keyboardType: TextInputType.text, // Deja solo teclado numerico 
-                style: const TextStyle(fontSize: 18,color: Colors.white,),
-                textAlign: TextAlign.center,
-                cursorColor: Colors.white,
-                decoration: InputDecorations.authInputDecorationEvento(
-                  hintText: 'Dirección',
-                  labelText: ''
-                ),
-                validator: ( value ) {
-                  if(value == null || value.length < 1){
-                    return 'La dirección es obligatoria';
-                  }
-                }, 
-              ),*/
               SizedBox(height: 30,),
               Wrap(
                 children: [
@@ -259,82 +253,38 @@ class _EventoForm extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 15,),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 5, vertical: 5),
-                width: double.infinity,
-                child: Wrap(
-                  children: [
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      child: TextFormField(
-                        initialValue: '${evento.dias}',
-                        onChanged: ( value ) => evento.dias = value,
-                        keyboardType: TextInputType.text, // Deja solo teclado numerico 
-                        style: const TextStyle(fontSize: 15,color: Colors.white,),
-                        textAlign: TextAlign.center,
-                        cursorColor: Colors.white,
-                        decoration: InputDecorations.authInputDecorationGeneral(
-                          hintText: '',
-                          labelText: 'Dias',
-                        ),
-                        validator: ( value ) {
-                          if(value == null || value.length < 1){
-                            return 'El o los dias son obligatorios';
-                          }
-                        }, 
-                      ),
+              SizedBox(height: 20,),
+              Padding(
+                padding: const EdgeInsets.only(right: 0.0),
+                child: Container(
+                  margin: EdgeInsets.all(0),
+                  padding: EdgeInsets.only(right: 10,left: 10,top: 3,bottom: 3),
+                  alignment: Alignment.center, 
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.05),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    border: Border.all(
+                      color: Colors.white,
                     ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.03,),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      child: TextFormField(
-                        initialValue: '${evento.mes}',
-                        onChanged: ( value ) => evento.mes = value,
-                        keyboardType: TextInputType.text, // Deja solo teclado numerico 
-                        style: const TextStyle(fontSize: 15,color: Colors.white,),
-                        textAlign: TextAlign.center,
-                        cursorColor: Colors.white,
-                        decoration: InputDecorations.authInputDecorationGeneral(
-                          hintText: '',
-                          labelText: 'Mes',
-                        ),
-                        validator: ( value ) {
-                          if(value == null || value.length < 1){
-                            return 'El mes es obligatorio';
-                          }
-                        }, 
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.0),
+                        offset: const Offset(0,0),
+                        blurRadius: 2,
                       ),
-                    ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.03,),
-                    Container(
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      child: TextFormField(
-                        initialValue: '${evento.anual}',
-                        onChanged: ( value ) => evento.anual = value,
-                        keyboardType: TextInputType.text, // Deja solo teclado numerico 
-                        style: const TextStyle(fontSize: 15,color: Colors.white,),
-                        textAlign: TextAlign.center,
-                        cursorColor: Colors.white,
-                        decoration: InputDecorations.authInputDecorationGeneral(
-                          hintText: '',
-                          labelText: 'Año',
-                        ),
-                        validator: ( value ) {
-                          if(value == null || value.length < 1){
-                            return 'El año es obligatorio';
-                          }
-                        }, 
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
+                  child: ChangeNotifierProvider(
+                    create: (_) {},
+                    child: _ListaDesplegableMes(listaDesplegableMes,vistaListMes,evento,listaDesplegableDia,vistaListDia,listaDesplegableAnual,vistaListAnual,listaDesplegableDiasCont,vistaListMesAux),
+                  ),
                 ),
               ),
-              SizedBox(height: 20,),
+              SizedBox(height: 15,),
               TextFormField(
                 initialValue: '${evento.descripcion}',
                 onChanged: ( value ) => evento.descripcion = value,
-                keyboardType: TextInputType.text, // Deja solo teclado numerico 
+                keyboardType: TextInputType.multiline, // Deja solo teclado numerico 
                 style: const TextStyle(fontSize: 16,color: Colors.white,),
                 textAlign: TextAlign.center,
                 cursorColor: Colors.white,
@@ -349,13 +299,13 @@ class _EventoForm extends StatelessWidget {
                   }
                 }, 
               ),
-              SizedBox(height: 15,),
+              /*SizedBox(height: 15,),
               SwitchListTile.adaptive(
                 value: true,
                 title: Text('Disponible',style: TextStyle(color: Colors.white),),
                 activeColor: Colors.white, 
                 onChanged: eventoForm.updateEstado,
-              ),
+              ),*/
               SizedBox(height: 30,),
             ],
           )
@@ -478,11 +428,12 @@ class _ListaDesplegableForm extends State<_ListaDesplegable> {
             value: vistaList,
           ),
           Container(
-            margin: EdgeInsets.all(20),
+            margin: EdgeInsets.symmetric(vertical: 10,horizontal: 15),
+            padding: EdgeInsets.all(10),
             width: double.infinity,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                  color: Colors.grey.withOpacity(0.1),
+                  color: Colors.white.withOpacity(0.1),
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   boxShadow: [
                     BoxShadow(
@@ -532,7 +483,6 @@ class _ListaDesplegableTipoForm extends State<_ListaDesplegableTipo> {
   late List<String> listaDesplegable = [];
   late var vistaList;
   late Evento evento;
-
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(
@@ -544,7 +494,7 @@ class _ListaDesplegableTipoForm extends State<_ListaDesplegableTipo> {
           value: value,
           child: Text(
             value,
-            style: TextStyle(fontSize: 20,color: Colors.black),
+            style: TextStyle(fontSize: 20,color: Colors.black,),
           ), 
         ); 
       }).toList(),
@@ -560,6 +510,174 @@ class _ListaDesplegableTipoForm extends State<_ListaDesplegableTipo> {
         }),
         },
       value: vistaList,
+    );
+  }
+}
+
+class _ListaDesplegableMes extends StatefulWidget{
+  
+  _ListaDesplegableMes(
+    this.listaDesplegable,
+    this.vistaList,
+    this.evento,
+    this.listaDesplegableDia,
+    this.vistaListDia,
+    this.listaDesplegableAnual,
+    this.vistaListAnual,
+    this.listaDesplegableDiasCont,
+    this.vistaListMesAux,
+  );
+
+  late List<String> listaDesplegable = [];
+  late var vistaList = '';
+  late String vistaListMesAux = '';
+  late Evento evento;
+  late List<String> listaDesplegableDia = [];
+  late var vistaListDia = '';
+  late List<String> listaDesplegableAnual = [];
+  late var vistaListAnual = '';
+  late List<int> listaDesplegableDiasCont = [];
+  bool estadoMes = true;
+  
+  @override
+  _ListaDesplegableMesForm createState() => _ListaDesplegableMesForm(listaDesplegable, vistaList, evento,listaDesplegableDia,vistaListDia,listaDesplegableAnual,vistaListAnual,listaDesplegableDiasCont,vistaListMesAux,estadoMes);
+}
+
+class _ListaDesplegableMesForm extends State<_ListaDesplegableMes> {
+  
+  _ListaDesplegableMesForm(
+    this.listaDesplegable,
+    this.vistaList,
+    this.evento,
+    this.listaDesplegableDia,
+    this.vistaListDia,
+    this.listaDesplegableAnual,
+    this.vistaListAnual,
+    this.listaDesplegableDiasCont,
+    this.vistaListMesAux,
+    this.estadoMes,
+  );
+  
+  late List<String> listaDesplegable = [];
+  late var vistaList;
+  late String vistaListMesAux;
+  late Evento evento;
+  late List<String> listaDesplegableDia = [];
+  late var vistaListDia;
+  late List<String> listaDesplegableAnual = [];
+  late var vistaListAnual;
+  late List<int> listaDesplegableDiasCont;
+  bool estadoMes;
+
+  @override
+  Widget build(BuildContext context) {
+    evento.mes = vistaList;
+    evento.anual = vistaListAnual;
+    
+    if(!(vistaListMesAux == vistaList)){
+      for(int i=0;i<listaDesplegable.length;i++){
+        if(evento.mes == listaDesplegable[i]){
+          listaDesplegableDia=[];
+          for(int j=1;j<=listaDesplegableDiasCont[i];j++){
+            listaDesplegableDia.add('${j}');
+          }
+          vistaListMesAux=vistaList;
+        }
+      }
+      vistaListDia=listaDesplegableDia[0];
+    }
+    evento.dias = vistaListDia;
+    
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      width: double.infinity,
+      child: Column(
+        children: [
+          SizedBox(height: 10,),
+          Text(
+            'Fecha del evento',
+            style: const TextStyle(fontSize: 18,color: Colors.white,),
+          ),
+          SizedBox(height: 5,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 20.0),
+                child: DropdownButton<String>(
+                  alignment: Alignment.center,
+                  icon: Icon(Icons.arrow_drop_down,color: Colors.white,),
+                  dropdownColor: Colors.grey.withOpacity(0.8),
+                  items: listaDesplegableDia.map<DropdownMenuItem<String>>((String value2){
+                    return DropdownMenuItem<String>( 
+                      alignment: Alignment.center,
+                      value: value2,
+                      child: Text(
+                        value2,
+                        style: TextStyle(fontSize: 16,color: Colors.white,fontWeight: FontWeight.bold),
+                      ), 
+                    ); 
+                  }).toList(),
+                  onChanged: (value2) => {
+                    vistaListDia = value2,
+                    setState(() {}),
+                    },
+                  value: vistaListDia,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 0.0,left: 0.0),
+                child: DropdownButton<String>(
+                  alignment: Alignment.center,
+                  icon: Icon(Icons.arrow_drop_down,color: Colors.white,),
+                  dropdownColor: Colors.grey.withOpacity(0.8),
+                  items: listaDesplegable.map<DropdownMenuItem<String>>((String value){
+                    return DropdownMenuItem<String>( 
+                      alignment: Alignment.center,
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(fontSize: 16,color: Colors.white,fontWeight: FontWeight.bold),
+                      ), 
+                    ); 
+                  }).toList(),
+                
+                  onChanged: (value) => {
+                    vistaList = value,
+                    setState(() {}),
+                    },
+                  value: vistaList,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 10,right: 20.0),
+                child: DropdownButton<String>(
+                  alignment: Alignment.center,
+                  icon: Icon(Icons.arrow_drop_down,color: Colors.white,),
+                  dropdownColor: Colors.grey.withOpacity(0.8),
+                  items: listaDesplegableAnual.map<DropdownMenuItem<String>>((String value3){
+                    return DropdownMenuItem<String>( 
+                      alignment: Alignment.center,
+                      value: value3,
+                      child: Text(
+                        value3,
+                        style: TextStyle(fontSize: 16,color: Colors.white,fontWeight: FontWeight.bold),
+                      ), 
+                    ); 
+                  }).toList(),
+                
+                  onChanged: (value3) => {
+                    vistaListAnual = value3,
+                    setState(() {}),
+                    },
+                  value: vistaListAnual,
+                ),
+              ),
+            ],
+          ),
+        ],
+        
+      ),
     );
   }
 }

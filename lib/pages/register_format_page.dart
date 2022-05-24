@@ -15,7 +15,7 @@ class RegisterFormatPage extends StatelessWidget {
     final loginForm = Provider.of<LoginFormProvider>(context);
     final loginFormAuxiliar = Provider.of<LoginFormAuxiliarProvider>(context);
     loginForm.formKey = loginFormAuxiliar.formKey;
- 
+    //print(object)
     return Form(
       key: loginForm.formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,

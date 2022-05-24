@@ -151,7 +151,7 @@ class _LugarForm extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca una dirección del lugar'));
                     }else{
                       _enviarLugar();
-                      lugarService.lugares.add(lugar);
+                      lugarService.actualizar();
                       Navigator.pushNamed(context, 'crearevento');
                     }
                   },

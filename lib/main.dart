@@ -1,3 +1,4 @@
+import 'package:bogo_u/pages/Pruebas.dart';
 import 'package:flutter/material.dart';
 import 'package:bogo_u/pages/pages.dart';
 import 'package:provider/provider.dart';
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
       title: 'Bogo_U',
       debugShowCheckedModeBanner: false,
-      initialRoute: 'register',
+      initialRoute: 'principal',
       routes: {
         'login': ( _ ) => LoginPage(),
         'principal': ( _ ) => principalPage(),
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
         'crearlugar': ( _ ) => CrearLugarPage(),
         'creartipo': ( _ ) => CrearTipoPage(),
         'crearusuario': ( _ ) => CrearUsuarioPage(),
+        'prueba': ( _ ) => Prueba(),
       },
     );
   }

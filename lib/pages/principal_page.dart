@@ -1,6 +1,5 @@
 import 'package:bogo_u/dao/dao.dart';
 import 'package:bogo_u/models/models.dart';
-import 'package:bogo_u/pages/evento_widget_page.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -29,7 +28,7 @@ class Principal extends State<principalPage> {
     final eventoService = Provider.of<EventoService>(context);
     final authService = Provider.of<AuthService>(context, listen: false); 
     if(eventoService.isLoading) return LoadingPage();
-    
+
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
@@ -92,7 +91,6 @@ class Principal extends State<principalPage> {
           return MaterialButton(
             disabledTextColor: Colors.black87,
             onPressed: (){
-              eventoService.actualizar();
               eventoService.eventoSelect = evento;
               Navigator.pushNamed(context, 'evento');
             },

@@ -17,6 +17,7 @@ class Evento {
         required this.nombre,
         required this.tipo,
         required this.valor,
+        required this.estatus,
           this.imagen,
           this.id,
     });
@@ -32,6 +33,7 @@ class Evento {
     String nombre;
     int tipo;
     int valor;
+    int estatus;
     String? imagen;
     String? id;
 
@@ -47,6 +49,7 @@ class Evento {
         nombre: json["nombre"],
         tipo: json["tipo"],
         valor: json["valor"],
+        estatus: json["estatus"],
         imagen: json["imagen"] == null ? null : json["imagen"],
     );
 
@@ -62,6 +65,7 @@ class Evento {
         "nombre": nombre,
         "tipo": tipo,
         "valor": valor,
+        "estatus": estatus,
         "imagen": imagen == null ? null : imagen,
     };
 
@@ -77,6 +81,7 @@ class Evento {
       nombre: this.nombre,
       tipo: this.tipo,
       valor: this.valor,
+      estatus: this.estatus,
       imagen: this.imagen,
       id: this.id,
     );

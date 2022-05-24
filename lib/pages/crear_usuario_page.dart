@@ -190,7 +190,7 @@ class _UsuarioForm extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nEl telefono debe tener minimo 7 digitos'));
                     }else{
                       _enviarUsuario();
-                      usuarioService.usuarios.add(usuario);
+                      usuarioService.actualizar();
                       Navigator.pushNamed(context, 'principal');
                     }
                   },

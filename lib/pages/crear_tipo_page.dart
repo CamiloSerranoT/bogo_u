@@ -130,7 +130,7 @@ class _TipoForm extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un nombre del tipo'));
                     }else{
                       _enviarLugar();
-                      tipoService.tipos.add(tipo);
+                      tipoService.actualizar();
                       Navigator.pushNamed(context, 'crearevento');
                     }
                   },

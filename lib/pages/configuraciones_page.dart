@@ -15,21 +15,10 @@ class configuracionesPage extends StatelessWidget {
     final authService = Provider.of<AuthService>(context, listen: false); 
     final datos = Provider.of<LoginFormProvider>(context);
     final usuarioService = Provider.of<UsuarioService>(context);
-    bool estado = false;
-    print(datos.correo);
-    print(datos.contrasena);
-    print(usuarioService.usuarios[0].correo);
-    print(usuarioService.usuarios[1].correo);
-    print(usuarioService.usuarios[2].correo);
-    print(usuarioService.usuarios[3].correo);
-    print(usuarioService.usuarios[4].correo);
-    //print(usuarioService.usuarios[4].correo);
-    if(usuarioService.isLoading) return LoadingPage();
 
     for(int i = 0; i<usuarioService.usuarios.length;i++){
-      if(usuarioService.usuarios[i].correo == datos.correo && estado == false){
+      if(usuarioService.usuarios[i].correo == datos.correo){
         usuarioService.usuariosSelect = usuarioService.usuarios[i].copy();
-        estado=true;
       }
     }
     
