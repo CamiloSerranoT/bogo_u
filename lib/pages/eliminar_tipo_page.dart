@@ -3,19 +3,18 @@ import 'package:bogo_u/models/models.dart';
 import 'package:bogo_u/pages/pages.dart';
 import 'package:bogo_u/services/services.dart';
 import 'package:flutter/material.dart';
-import 'package:bogo_u/ui/uis.dart';
 import 'package:provider/provider.dart';
 
-class CrearTipoPage extends StatefulWidget {
+class EliminarTipoPage extends StatefulWidget {
   
-  CrearTipoPage({ Key? key }) : super(key: key);
-  final tipoDAO = TipoDAO();
+  EliminarTipoPage({ Key? key }) : super(key: key);
+  final eventoDAO = LugarDAO();
 
   @override
-  CrearTipoFormPage createState() => CrearTipoFormPage();
+  EliminarTipoFormPage createState() => EliminarTipoFormPage();
 }
 
-class CrearTipoFormPage extends State<CrearTipoPage> {
+class EliminarTipoFormPage extends State<EliminarTipoPage> {
 
   Tipo tipo = Tipo(
     tipo: 0,
@@ -39,7 +38,7 @@ class CrearTipoFormPage extends State<CrearTipoPage> {
             ),
           ),
         ),
-        title: Text('Crear tipo'),
+        title: Text('Eliminar lugar'),
         titleTextStyle: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
         backgroundColor: Colors.transparent,
         centerTitle: true,
@@ -78,11 +77,15 @@ class _TipoForm extends StatelessWidget {
   Widget build(BuildContext context) {
     final tipoService = Provider.of<TipoService>(context);
     if(tipoService.isLoading) return LoadingPage();
-
-    tipo.tipo = tipoService.tipos[tipoService.tipos.length-1].tipo;
+    
+    List<String> listaDesplegableTipos = [];
+    for(int i=0;i<tipoService.tipos.length;i++){
+      listaDesplegableTipos.add('${tipoService.tipos[i].nombre}');
+    }
+    var vistaLisTipos = listaDesplegableTipos[0];
 
     return Padding(
-      padding: EdgeInsets.only(left: 15,right: 15,bottom: 10,top: 100),
+      padding: EdgeInsets.only(left: 15,right: 15,bottom: 10,top: 40),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
         width: double.infinity,
@@ -91,22 +94,36 @@ class _TipoForm extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 40,),
-              TextFormField(
-                autocorrect: false,
-                initialValue: '${tipo.nombre}',
-                keyboardType: TextInputType.text,
-                onChanged: ( value ) => tipo.nombre = value,
-                validator: ( value ) {
-                  if(value == null || value.length < 1){
-                    return 'El nombre es obligatorio';
-                  }
-                }, 
+              Text(
+                'Seleccione el tipo a eliminar',
                 style: const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold,),
-                textAlign: TextAlign.center,
-                cursorColor: Colors.white,
-                decoration: InputDecorations.authInputDecorationGeneral(
-                  hintText: '', 
-                  labelText: 'Nombre del tipo',
+              ),
+              SizedBox(height: 40,),
+              Padding(
+                padding: const EdgeInsets.only(right: 0.0),
+                child: Container(
+                  margin: EdgeInsets.all(0),
+                  width: double.infinity,
+                  padding: EdgeInsets.symmetric(vertical: 10.0,horizontal: 10),
+                  alignment: Alignment.center, 
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.05),
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    border: Border.all(
+                      color: Colors.white,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withOpacity(0.0),
+                        offset: const Offset(0,0),
+                        blurRadius: 2,
+                      ),
+                    ],
+                  ),
+                  child: ChangeNotifierProvider(
+                    create: (_) {},
+                    child: _ListaDesplegableTipos(tipo,listaDesplegableTipos,vistaLisTipos),
+                  ),
                 ),
               ),
               SizedBox(height: 40,),
@@ -123,18 +140,14 @@ class _TipoForm extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Text(
-                      'Crear',
+                      'Eliminar',
                       style: TextStyle(fontSize: 20,color: Colors.black,),              
                     ),
                   ),
                   onPressed: (){
-                    if(tipo.nombre.length < 1 || tipo.nombre == null){
-                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un nombre del tipo'));
-                    }else{
-                      _enviarLugar();
-                      tipoService.actualizar();
-                      Navigator.pushNamed(context, 'crearevento');
-                    }
+                    _eliminarTipo();
+                    tipoService.actualizar();
+                    Navigator.pushNamed(context, 'crearevento');
                   },
                 ),
               ),
@@ -146,9 +159,8 @@ class _TipoForm extends StatelessWidget {
     );
   }
 
-  void _enviarLugar() {
-    tipo.tipo = tipo.tipo + 1;
-    tipoDAO.guardarTipo(tipo);
+  void _eliminarTipo() {
+    tipoDAO.eliminarTipo(tipo.id!);
   }
 
   SnackBar _Error(fraseo){    
@@ -190,4 +202,77 @@ class _TipoForm extends StatelessWidget {
       ],
   );
 
+}
+
+class _ListaDesplegableTipos extends StatefulWidget{
+  
+  _ListaDesplegableTipos(
+    this.tipo,
+    this.listaDesplegable,
+    this.vistaList,
+  );
+
+  late Tipo tipo;
+  late List<String> listaDesplegable = [];
+  late var vistaList = '';
+  
+  @override
+  _ListaDesplegableTiposForm createState() => _ListaDesplegableTiposForm(tipo,listaDesplegable,vistaList);
+}
+
+class _ListaDesplegableTiposForm extends State<_ListaDesplegableTipos> {
+  
+  _ListaDesplegableTiposForm(
+    this.tipo,
+    this.listaDesplegable,
+    this.vistaList,
+  );
+  
+  late Tipo tipo;
+  late List<String> listaDesplegable = [];
+  late var vistaList;
+
+  @override
+  Widget build(BuildContext context) {
+    final tipoService = Provider.of<TipoService>(context);
+    for(int i=0;i<tipoService.tipos.length;i++){
+      if(tipoService.tipos[i].nombre == vistaList){
+        tipo.id = '${tipoService.tipos[i].id}';
+      }
+    }
+    
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 0),
+      width: double.infinity,
+
+      child:  Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(5.0),
+            child: DropdownButton<String>(
+              alignment: Alignment.center,
+              icon: Icon(Icons.keyboard_double_arrow_down_sharp,color: Colors.white,),
+              dropdownColor: Colors.grey.withOpacity(0.8),
+              items: listaDesplegable.map<DropdownMenuItem<String>>((String value11){
+                return DropdownMenuItem<String>( 
+                  alignment: Alignment.center,
+                  value: value11,
+                  child: Text(
+                    value11,
+                    style: TextStyle(fontSize: 16,color: Colors.white,fontWeight: FontWeight.bold),
+                  ), 
+                ); 
+              }).toList(),
+            
+              onChanged: (value11) => {
+                vistaList = value11,
+                setState(() {}),
+                },
+              value: vistaList,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
 }

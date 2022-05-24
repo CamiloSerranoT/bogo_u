@@ -204,13 +204,26 @@ class _EventoForm extends StatelessWidget {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(left: 5.0),
+                    padding: const EdgeInsets.only(left: 0.0),
                       child: IconButton(
                         onPressed: () {
                           Navigator.pushNamed(context, 'crearlugar');
                         }, 
                         icon: Icon(
                           Icons.add,
+                          size: 35,
+                          color: Colors.white,
+                        ),
+                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0.0),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'eliminarlugar');
+                        }, 
+                        icon: Icon(
+                          Icons.remove,
                           size: 35,
                           color: Colors.white,
                         ),
@@ -276,6 +289,19 @@ class _EventoForm extends StatelessWidget {
                         }, 
                         icon: Icon(
                           Icons.add,
+                          size: 35,
+                          color: Colors.white,
+                        ),
+                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0.0),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'eliminartipo');
+                        }, 
+                        icon: Icon(
+                          Icons.remove,
                           size: 35,
                           color: Colors.white,
                         ),
@@ -469,14 +495,19 @@ class _EventoForm extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un codigo de tipo.\nRevise el icono de información al lado derecho del campo.'));
                     }else if(int.parse(aper[0]) > int.parse(ini[0])){
                       ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nLa hora de apertura no puede ser posterior a la de inicio'));
-                    }else if(int.parse(aper[0]) == int.parse(ini[1])){
+                    }else if(int.parse(aper[0]) == int.parse(ini[0])){
                       if(int.parse(aper[1]) >= int.parse(ini[1])){
                         ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nEl minuto de apertura no puede ser posterior o igual al de inicio'));
+                      }else{ 
+                        evento.codigo = eventoService.eventos[eventoService.eventos.length-1].codigo + 1;
+                        _enviarEvento();
+                        eventoService.actualizar();
+                        Navigator.pushNamed(context, 'principal');
                       }
                     }else if(evento.descripcion.length < 1 || evento.descripcion == null){
                       ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca una descripcion del evento'));
-                    }else{  
-                      evento.codigo= eventoService.eventos.length + 1;
+                    }else{ 
+                      evento.codigo = eventoService.eventos[eventoService.eventos.length-1].codigo + 1;
                       _enviarEvento();
                       eventoService.actualizar();
                       Navigator.pushNamed(context, 'principal');

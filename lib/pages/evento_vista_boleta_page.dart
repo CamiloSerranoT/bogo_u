@@ -10,8 +10,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'package:provider/provider.dart';
 
-class EventoPage extends StatelessWidget {
-  const EventoPage({ Key? key }) : super(key: key);
+class EventoVistaBoletaPage extends StatelessWidget {
+  const EventoVistaBoletaPage({ Key? key }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -103,29 +103,6 @@ class _EventoPageBody extends StatelessWidget {
         ),
         children:[
           SpeedDialChild(
-            child: Icon(Icons.highlight_remove,size: 30,),
-            //backgroundColor: Colors.red,
-            label: 'Eliminar evento',    
-            onTap: (){
-              for(int i=0;i<boletasService.boletas.length;i++){
-                if(boletasService.boletas[i].idevento == evento.codigo){
-                  boletaDAO.eliminarBoleta(boletasService.boletas[i].id!);
-                }
-              }
-              eventoDAO.eliminarEvento(evento.id!);
-              eventoService.actualizar();
-              Navigator.pushNamed(context, 'principal');
-            }  
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.save_outlined,size: 30,),
-            //backgroundColor: Colors.red,
-            label: 'Guardar modificaciones evento',    
-            onTap: (){
-              
-            }  
-          ),
-          SpeedDialChild(
             child: Icon(Icons.remove,size: 30,),
             //backgroundColor: Colors.red,
             label: 'Vender boleta',    
@@ -148,28 +125,6 @@ class _EventoPageBody extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nNo ha comprado la boleta'));
               }
             }  
-          ),
-          SpeedDialChild(
-            child:Icon(Icons.add,size: 30,),
-            label: 'Comprar boleta',
-            onTap: (){
-              bool estado = true;
-              for(int i = 0;i<boletasService.boletas.length;i++){
-                if(boletasService.boletas[i].idevento == evento.codigo){
-                  if(boletasService.boletas[i].idusuario == usuarioService.usuariosSelect.correo){
-                    estado = false;
-                  }
-                }
-              }
-
-              if(estado == true){
-                boletaDAO.guardarBoletas(boleta);
-                boletasService.actualizar();
-                Navigator.pushNamed(context, 'principal');
-              }else{
-                ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nYa tiene vinculado este evento'));
-              }
-            },
           ),
         ],
       ),

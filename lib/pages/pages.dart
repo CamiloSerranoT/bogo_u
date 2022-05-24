@@ -12,6 +12,9 @@ export 'package:bogo_u/pages/crear_evento_page.dart';
 export 'package:bogo_u/pages/crear_lugar_page.dart';
 export 'package:bogo_u/pages/crear_tipo_page.dart';
 export 'package:bogo_u/pages/crear_usuario_page.dart';
+export 'package:bogo_u/pages/eliminar_lugar_page.dart';
+export 'package:bogo_u/pages/eliminar_tipo_page.dart';
+export 'package:bogo_u/pages/evento_vista_boleta_page.dart';
 
 /*
 export 'package:bogo_u/pages/configuraciones_act_page.dart';

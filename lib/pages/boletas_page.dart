@@ -106,7 +106,7 @@ class Boletas extends State<boletasPage> {
               disabledTextColor: Colors.black87,
               onPressed: (){
                 eventoService.eventoSelect = evento;
-                Navigator.pushNamed(context, 'evento');
+                Navigator.pushNamed(context, 'eventovistaboleta');
               },
               child: CardBoletas(
                 evento: evento,

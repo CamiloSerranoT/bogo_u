@@ -12,4 +12,7 @@ class EventoDAO {
 
   Query getEvento() => eventoRef;
 
+  void eliminarEvento(String id){
+    eventoRef.child(id).remove();
+  }
 }

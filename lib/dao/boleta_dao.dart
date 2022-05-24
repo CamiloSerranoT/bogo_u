@@ -12,4 +12,7 @@ class BoletaDAO {
 
   Query getBoleta() => boletaRef;
 
+  void eliminarBoleta(String id){
+    boletaRef.child(id).remove();
+  }
 }

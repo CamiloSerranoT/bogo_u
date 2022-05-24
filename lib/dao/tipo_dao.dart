@@ -12,4 +12,7 @@ class TipoDAO {
 
   Query getTipo() => tipoRef;
 
+  void eliminarTipo(String id){
+    tipoRef.child(id).remove();
+  }
 }
