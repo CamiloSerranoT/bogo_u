@@ -211,7 +211,20 @@ class _EventoForm extends StatelessWidget {
                         }, 
                         icon: Icon(
                           Icons.add,
-                          size: 35,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0.0),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, 'modificarlugar');
+                        }, 
+                        icon: Icon(
+                          Icons.settings,
+                          size: 30,
                           color: Colors.white,
                         ),
                       ),
@@ -224,13 +237,13 @@ class _EventoForm extends StatelessWidget {
                         }, 
                         icon: Icon(
                           Icons.remove,
-                          size: 35,
+                          size: 30,
                           color: Colors.white,
                         ),
                       ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 5.0),
+                    padding: const EdgeInsets.only(right: 0.0),
                       child: IconButton(
                         onPressed: () {
                           final snackBar = SnackBar(
@@ -298,6 +311,19 @@ class _EventoForm extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 0.0),
                       child: IconButton(
                         onPressed: () {
+                          Navigator.pushNamed(context, 'modificartipo');
+                        }, 
+                        icon: Icon(
+                          Icons.settings,
+                          size: 30,
+                          color: Colors.white,
+                        ),
+                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 0.0),
+                      child: IconButton(
+                        onPressed: () {
                           Navigator.pushNamed(context, 'eliminartipo');
                         }, 
                         icon: Icon(
@@ -308,7 +334,7 @@ class _EventoForm extends StatelessWidget {
                       ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(right: 5.0),
+                    padding: const EdgeInsets.only(right: 0.0),
                     child: IconButton(
                       onPressed: () {
                         final snackBar = SnackBar(
@@ -489,9 +515,9 @@ class _EventoForm extends StatelessWidget {
                     var ini = evento.inicio.split(':');  
                     if(evento.nombre.length < 1 || evento.nombre == null){
                       ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un nombre del evento'));
-                    }else if(evento.lugar < 1 || evento.lugar > lugarService.lugares.length || evento.lugar == null){
+                    }else if(evento.lugar < 1 || evento.lugar == null){
                       ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un codigo de lugar.\nRevise el icono de información al lado derecho del campo.'));
-                    }else if(evento.tipo < 1 || evento.tipo > tipoService.tipos.length || evento.tipo == null){
+                    }else if(evento.tipo < 1 || evento.tipo == null){
                       ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un codigo de tipo.\nRevise el icono de información al lado derecho del campo.'));
                     }else if(int.parse(aper[0]) > int.parse(ini[0])){
                       ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nLa hora de apertura no puede ser posterior a la de inicio'));

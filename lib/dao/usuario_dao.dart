@@ -12,7 +12,11 @@ class UsuarioDAO {
 
   Query getUsuario() => usuarioRef;
 
-  Future<void> eliminarUsuario(Usuario usuario){
-    return usuarioRef.child(usuarioRef.key).set(usuario);
+  void eliminarUsuario(String id){
+    usuarioRef.child(id).remove();
+  }
+
+  void modificarTodoUsuario(String id,Usuario usuario){
+    usuarioRef.child(id).set(usuario.toJson());
   }
 }

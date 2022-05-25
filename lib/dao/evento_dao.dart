@@ -15,4 +15,8 @@ class EventoDAO {
   void eliminarEvento(String id){
     eventoRef.child(id).remove();
   }
+
+  void modificarTodoEvento(String id,Evento evento){
+    eventoRef.child(id).set(evento.toJson());
+  }
 }

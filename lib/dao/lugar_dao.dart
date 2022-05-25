@@ -15,4 +15,8 @@ class LugarDAO {
   void eliminarLugar(String id){
     lugarRef.child(id).remove();
   }
+
+  void modificarTodoLugar(String id,Lugar lugar){
+    lugarRef.child(id).set(lugar.toJson());
+  }
 }

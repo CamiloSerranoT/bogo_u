@@ -1,20 +1,21 @@
 import 'package:bogo_u/dao/dao.dart';
 import 'package:bogo_u/models/models.dart';
+import 'package:bogo_u/pages/pages.dart';
 import 'package:bogo_u/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:bogo_u/ui/uis.dart';
 import 'package:provider/provider.dart';
 
-class CrearUsuarioPage extends StatefulWidget {
+class ModificarImagenUsuarioPage extends StatefulWidget {
   
-  CrearUsuarioPage({ Key? key }) : super(key: key);
+  ModificarImagenUsuarioPage({ Key? key }) : super(key: key);
   final eventoDAO = LugarDAO();
 
   @override
-  CrearUsuarioFormPage createState() => CrearUsuarioFormPage();
+  ModificarImagenUsuarioFormPage createState() => ModificarImagenUsuarioFormPage();
 }
 
-class CrearUsuarioFormPage extends State<CrearUsuarioPage> {
+class ModificarImagenUsuarioFormPage extends State<ModificarImagenUsuarioPage> {
 
   Usuario usuario = Usuario(
     apellidos: '',
@@ -23,6 +24,7 @@ class CrearUsuarioFormPage extends State<CrearUsuarioPage> {
     estado: true,
     nombres: '',
     telefono: 0,
+    imagen: null,
   );
 
   @override
@@ -41,7 +43,10 @@ class CrearUsuarioFormPage extends State<CrearUsuarioPage> {
             ),
           ),
         ),
-        title: Text('Crear usuario'),
+        title: Text(
+          'Modificar imagen',
+          style: const TextStyle(fontSize: 25,color: Colors.white,),
+        ),
         titleTextStyle: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
         backgroundColor: Colors.transparent,
         centerTitle: true,
@@ -49,9 +54,9 @@ class CrearUsuarioFormPage extends State<CrearUsuarioPage> {
           IconButton(
             onPressed: (){
               authService.logout();
-              Navigator.pushNamed(context, 'register');
+              Navigator.pushNamed(context, 'checking');
             },
-            icon: Icon(Icons.menu),
+            icon: Icon(Icons.login_outlined),
           ),
         ],
       ),
@@ -59,7 +64,7 @@ class CrearUsuarioFormPage extends State<CrearUsuarioPage> {
         child: Column(
           children: [
             SizedBox(height: 10,),
-            _UsuarioForm(usuario: usuario,),
+            _LugarForm(usuario: usuario,),
           ],
         ),
       ),
@@ -67,8 +72,8 @@ class CrearUsuarioFormPage extends State<CrearUsuarioPage> {
   }
 }
 
-class _UsuarioForm extends StatelessWidget {
-  _UsuarioForm({
+class _LugarForm extends StatelessWidget {
+  _LugarForm({
     Key? key,
     required this.usuario,
   }) : super(key: key);
@@ -78,16 +83,13 @@ class _UsuarioForm extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    
     final usuarioService = Provider.of<UsuarioService>(context);
-    final datos = Provider.of<LoginFormProvider>(context);
+    if(usuarioService.isLoading) return LoadingPage();
+    
+    usuario = usuarioService.usuariosSelect;
 
-    usuario.correo = datos.correo;
-    usuario.clave = datos.contrasena;
-    
-    
     return Padding(
-      padding: EdgeInsets.only(left: 15,right: 15,bottom: 10,top: 10),
+      padding: EdgeInsets.only(left: 15,right: 15,bottom: 10,top: 40),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
         width: double.infinity,
@@ -95,12 +97,11 @@ class _UsuarioForm extends StatelessWidget {
         child: Form(
           child: Column(
             children: [
-              SizedBox(height: 30,),
+              SizedBox(height: 40,),
               TextFormField(
                 autocorrect: false,
-                initialValue: '${usuario.nombres}',
                 keyboardType: TextInputType.text,
-                onChanged: ( value ) => usuario.nombres = value,
+                onChanged: ( value ) => usuario.imagen = value,
                 validator: ( value ) {
                   if(value == null || value.length < 1){
                     return 'El nombre es obligatorio';
@@ -111,59 +112,10 @@ class _UsuarioForm extends StatelessWidget {
                 cursorColor: Colors.white,
                 decoration: InputDecorations.authInputDecorationGeneral(
                   hintText: '', 
-                  labelText: 'Nombres',
+                  labelText: 'Enlace del usuario',
                 ),
               ),
-              SizedBox(height: 25,),
-              TextFormField(
-                autocorrect: false,
-                initialValue: '${usuario.apellidos}',
-                keyboardType: TextInputType.text,
-                onChanged: ( value ) => usuario.apellidos = value,
-                validator: ( value ) {
-                  if(value == null || value.length < 1){
-                    return 'El apellido es obligatorio';
-                  }
-                }, 
-                style: const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold,),
-                textAlign: TextAlign.center,
-                cursorColor: Colors.white,
-                decoration: InputDecorations.authInputDecorationGeneral(
-                  hintText: '', 
-                  labelText: 'Apellidos',
-                ),
-              ),
-              SizedBox(height: 25,),
-              TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.number,
-                onChanged: ( value ) => usuario.telefono = int.parse(value),
-                validator: ( value ) {
-                  if(value == null || value.length < 1){
-                    return 'El telefono es obligatorio';
-                  }
-                }, 
-                style: const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold,),
-                textAlign: TextAlign.center,
-                cursorColor: Colors.white,
-                decoration: InputDecorations.authInputDecorationGeneral(
-                  hintText: '', 
-                  labelText: 'Telefono',
-                ),
-              ),
-              SizedBox(height: 25,),
-              TextFormField(
-                keyboardType: TextInputType.text,
-                onChanged: ( value ) => usuario.imagen = value,
-                style: const TextStyle(fontSize: 18,color: Colors.white,fontWeight: FontWeight.bold,),
-                textAlign: TextAlign.center,
-                cursorColor: Colors.white,
-                decoration: InputDecorations.authInputDecorationGeneral(
-                  hintText: '', 
-                  labelText: 'URL imagen(Opcional)',
-                ),
-              ),
-              SizedBox(height: 30,),
+              SizedBox(height: 40,),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 width: double.infinity,
@@ -177,26 +129,49 @@ class _UsuarioForm extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Text(
-                      'Validar',
+                      'Eliminar imagen actual',
                       style: TextStyle(fontSize: 20,color: Colors.black,),              
                     ),
                   ),
                   onPressed: (){
-                    if(usuario.nombres.length < 1 || usuario.nombres == null){
-                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un nombre de usuario'));
-                    }else if(usuario.apellidos.length < 1 || usuario.apellidos == null){
-                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un apellido de usuario'));
-                    }else if(usuario.telefono < 999999){
-                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nEl telefono debe tener minimo 7 digitos'));
+                    if(usuario.imagen == null){
+                      ScaffoldMessenger.of(context).showSnackBar(_Error('OBSERVACIÓN\nNo tenia imagen, por lo cual no se puede llevar a cabo esta acción.'));
+                      Navigator.pushNamed(context, 'configuraciones');
                     }else{
-                      _enviarUsuario();
+                      usuario.imagen = null;
+                      _modificarImagenusuario(usuario);
                       usuarioService.actualizar();
-                      Navigator.pushNamed(context, 'principal');
+                      Navigator.pushNamed(context, 'configuraciones');
                     }
                   },
                 ),
               ),
-              SizedBox(height: 25,),
+              SizedBox(height: 20,),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                width: double.infinity,
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)
+                  ),
+                  disabledColor: Colors.white,
+                  elevation: 10,
+                  color: Colors.white,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      'Modificar',
+                      style: TextStyle(fontSize: 20,color: Colors.black,),              
+                    ),
+                  ),
+                  onPressed: (){
+                    _modificarImagenusuario(usuario);
+                    usuarioService.actualizar();
+                    Navigator.pushNamed(context, 'configuraciones');
+                  },
+                ),
+              ),
+              SizedBox(height: 40,),
             ],
           )
         ),
@@ -204,8 +179,8 @@ class _UsuarioForm extends StatelessWidget {
     );
   }
 
-  void _enviarUsuario() {
-    usuarioDAO.guardarUsuario(usuario);
+  void _modificarImagenusuario(Usuario usuario) {
+    usuarioDAO.modificarTodoUsuario(usuario.id!,usuario);
   }
 
   SnackBar _Error(fraseo){    

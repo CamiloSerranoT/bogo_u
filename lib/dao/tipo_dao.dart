@@ -15,4 +15,8 @@ class TipoDAO {
   void eliminarTipo(String id){
     tipoRef.child(id).remove();
   }
+
+  void modificarTodoTipo(String id,Tipo tipo){
+    tipoRef.child(id).set(tipo.toJson());
+  }
 }

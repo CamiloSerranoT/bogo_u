@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:bogo_u/models/models.dart';
-import 'package:bogo_u/pages/pages.dart';
 import 'package:bogo_u/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:bogo_u/widgets/widgets.dart';

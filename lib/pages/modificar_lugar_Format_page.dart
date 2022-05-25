@@ -1,28 +1,26 @@
 import 'package:bogo_u/dao/dao.dart';
 import 'package:bogo_u/models/models.dart';
+import 'package:bogo_u/pages/pages.dart';
 import 'package:bogo_u/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:bogo_u/ui/uis.dart';
 import 'package:provider/provider.dart';
 
-class CrearUsuarioPage extends StatefulWidget {
+class ModificarLugarFormatPage extends StatefulWidget {
   
-  CrearUsuarioPage({ Key? key }) : super(key: key);
+  ModificarLugarFormatPage({ Key? key }) : super(key: key);
   final eventoDAO = LugarDAO();
 
   @override
-  CrearUsuarioFormPage createState() => CrearUsuarioFormPage();
+  ModificarLugarFormatFormPage createState() => ModificarLugarFormatFormPage();
 }
 
-class CrearUsuarioFormPage extends State<CrearUsuarioPage> {
+class ModificarLugarFormatFormPage extends State<ModificarLugarFormatPage> {
 
-  Usuario usuario = Usuario(
-    apellidos: '',
-    clave: '',
-    correo: '',
-    estado: true,
-    nombres: '',
-    telefono: 0,
+  Lugar lugar = Lugar(
+    lugar: 0,
+    nombre: '',
+    direccion: '',
   );
 
   @override
@@ -41,7 +39,7 @@ class CrearUsuarioFormPage extends State<CrearUsuarioPage> {
             ),
           ),
         ),
-        title: Text('Crear usuario'),
+        title: Text('Modificar lugar'),
         titleTextStyle: TextStyle(fontSize: 30, color: Colors.white, fontWeight: FontWeight.bold),
         backgroundColor: Colors.transparent,
         centerTitle: true,
@@ -49,9 +47,9 @@ class CrearUsuarioFormPage extends State<CrearUsuarioPage> {
           IconButton(
             onPressed: (){
               authService.logout();
-              Navigator.pushNamed(context, 'register');
+              Navigator.pushNamed(context, 'checking');
             },
-            icon: Icon(Icons.menu),
+            icon: Icon(Icons.login_outlined),
           ),
         ],
       ),
@@ -59,7 +57,7 @@ class CrearUsuarioFormPage extends State<CrearUsuarioPage> {
         child: Column(
           children: [
             SizedBox(height: 10,),
-            _UsuarioForm(usuario: usuario,),
+            _LugarForm(lugar: lugar,),
           ],
         ),
       ),
@@ -67,27 +65,24 @@ class CrearUsuarioFormPage extends State<CrearUsuarioPage> {
   }
 }
 
-class _UsuarioForm extends StatelessWidget {
-  _UsuarioForm({
+class _LugarForm extends StatelessWidget {
+  _LugarForm({
     Key? key,
-    required this.usuario,
+    required this.lugar,
   }) : super(key: key);
 
-  final usuarioDAO = UsuarioDAO(); 
-  late Usuario usuario;
+  final lugarDAO = LugarDAO(); 
+  late Lugar lugar;
   
   @override
   Widget build(BuildContext context) {
+    final lugarService = Provider.of<LugarService>(context);
+    if(lugarService.isLoading) return LoadingPage();
     
-    final usuarioService = Provider.of<UsuarioService>(context);
-    final datos = Provider.of<LoginFormProvider>(context);
+    lugar = lugarService.lugarSelect;
 
-    usuario.correo = datos.correo;
-    usuario.clave = datos.contrasena;
-    
-    
     return Padding(
-      padding: EdgeInsets.only(left: 15,right: 15,bottom: 10,top: 10),
+      padding: EdgeInsets.only(left: 15,right: 15,bottom: 10,top: 40),
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
         width: double.infinity,
@@ -95,12 +90,17 @@ class _UsuarioForm extends StatelessWidget {
         child: Form(
           child: Column(
             children: [
-              SizedBox(height: 30,),
+              SizedBox(height: 40,),
+              Text(
+                'Modifique los campos deseados',
+                style: const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold,),
+              ),
+              SizedBox(height: 40,),
               TextFormField(
                 autocorrect: false,
-                initialValue: '${usuario.nombres}',
+                initialValue: '${lugar.nombre}',
                 keyboardType: TextInputType.text,
-                onChanged: ( value ) => usuario.nombres = value,
+                onChanged: ( value ) => lugar.nombre = value,
                 validator: ( value ) {
                   if(value == null || value.length < 1){
                     return 'El nombre es obligatorio';
@@ -111,18 +111,18 @@ class _UsuarioForm extends StatelessWidget {
                 cursorColor: Colors.white,
                 decoration: InputDecorations.authInputDecorationGeneral(
                   hintText: '', 
-                  labelText: 'Nombres',
+                  labelText: 'Nombre del lugar',
                 ),
               ),
-              SizedBox(height: 25,),
+              SizedBox(height: 40,),
               TextFormField(
                 autocorrect: false,
-                initialValue: '${usuario.apellidos}',
+                initialValue: '${lugar.direccion}',
                 keyboardType: TextInputType.text,
-                onChanged: ( value ) => usuario.apellidos = value,
+                onChanged: ( value ) => lugar.direccion = value,
                 validator: ( value ) {
                   if(value == null || value.length < 1){
-                    return 'El apellido es obligatorio';
+                    return 'La dirección es obligatoria';
                   }
                 }, 
                 style: const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold,),
@@ -130,40 +130,10 @@ class _UsuarioForm extends StatelessWidget {
                 cursorColor: Colors.white,
                 decoration: InputDecorations.authInputDecorationGeneral(
                   hintText: '', 
-                  labelText: 'Apellidos',
+                  labelText: 'Dirección del lugar',
                 ),
               ),
-              SizedBox(height: 25,),
-              TextFormField(
-                autocorrect: false,
-                keyboardType: TextInputType.number,
-                onChanged: ( value ) => usuario.telefono = int.parse(value),
-                validator: ( value ) {
-                  if(value == null || value.length < 1){
-                    return 'El telefono es obligatorio';
-                  }
-                }, 
-                style: const TextStyle(fontSize: 20,color: Colors.white,fontWeight: FontWeight.bold,),
-                textAlign: TextAlign.center,
-                cursorColor: Colors.white,
-                decoration: InputDecorations.authInputDecorationGeneral(
-                  hintText: '', 
-                  labelText: 'Telefono',
-                ),
-              ),
-              SizedBox(height: 25,),
-              TextFormField(
-                keyboardType: TextInputType.text,
-                onChanged: ( value ) => usuario.imagen = value,
-                style: const TextStyle(fontSize: 18,color: Colors.white,fontWeight: FontWeight.bold,),
-                textAlign: TextAlign.center,
-                cursorColor: Colors.white,
-                decoration: InputDecorations.authInputDecorationGeneral(
-                  hintText: '', 
-                  labelText: 'URL imagen(Opcional)',
-                ),
-              ),
-              SizedBox(height: 30,),
+              SizedBox(height: 40,),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 width: double.infinity,
@@ -177,26 +147,24 @@ class _UsuarioForm extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 10),
                     child: Text(
-                      'Validar',
+                      'Modificar',
                       style: TextStyle(fontSize: 20,color: Colors.black,),              
                     ),
                   ),
                   onPressed: (){
-                    if(usuario.nombres.length < 1 || usuario.nombres == null){
-                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un nombre de usuario'));
-                    }else if(usuario.apellidos.length < 1 || usuario.apellidos == null){
-                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un apellido de usuario'));
-                    }else if(usuario.telefono < 999999){
-                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nEl telefono debe tener minimo 7 digitos'));
+                    if(lugar.nombre.length < 1 || lugar.nombre == null){
+                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un nombre del lugar'));
+                    }else if(lugar.direccion.length < 1 || lugar.direccion == null){
+                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca una dirección del lugar'));
                     }else{
-                      _enviarUsuario();
-                      usuarioService.actualizar();
-                      Navigator.pushNamed(context, 'principal');
+                      _modificarLugar(lugar);
+                      lugarService.actualizar();
+                      Navigator.pushNamed(context, 'crearevento');
                     }
                   },
                 ),
               ),
-              SizedBox(height: 25,),
+              SizedBox(height: 40,),
             ],
           )
         ),
@@ -204,8 +172,8 @@ class _UsuarioForm extends StatelessWidget {
     );
   }
 
-  void _enviarUsuario() {
-    usuarioDAO.guardarUsuario(usuario);
+  void _modificarLugar(Lugar lugar) {
+    lugarDAO.modificarTodoLugar(lugar.id!,lugar);
   }
 
   SnackBar _Error(fraseo){    

@@ -15,9 +15,9 @@ export 'package:bogo_u/pages/crear_usuario_page.dart';
 export 'package:bogo_u/pages/eliminar_lugar_page.dart';
 export 'package:bogo_u/pages/eliminar_tipo_page.dart';
 export 'package:bogo_u/pages/evento_vista_boleta_page.dart';
-
-/*
-export 'package:bogo_u/pages/configuraciones_act_page.dart';
-export 'package:bogo_u/pages/cambio_clave_page.dart';
-export 'package:bogo_u/pages/cambio_clave_act_page.dart';
-*/
+export 'package:bogo_u/pages/modificar_lugar_page.dart';
+export 'package:bogo_u/pages/modificar_lugar_Format_page.dart';
+export 'package:bogo_u/pages/modificar_tipo_page.dart';
+export 'package:bogo_u/pages/modificar_tipo_Format_page.dart';
+export 'package:bogo_u/pages/modificar_imagen_evento_page.dart';
+export 'package:bogo_u/pages/modificar_imagen_usu_page.dart';

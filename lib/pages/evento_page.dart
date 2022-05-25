@@ -81,7 +81,9 @@ class _EventoPageBody extends StatelessWidget {
                   top: 40,
                   right: 20,
                   child: IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, 'modificarimagenevento');
+                    },
                     icon: Icon(Icons.camera_alt_outlined, size: 40, color: Colors.white),
                   )
                 )
@@ -115,14 +117,6 @@ class _EventoPageBody extends StatelessWidget {
               eventoDAO.eliminarEvento(evento.id!);
               eventoService.actualizar();
               Navigator.pushNamed(context, 'principal');
-            }  
-          ),
-          SpeedDialChild(
-            child: Icon(Icons.save_outlined,size: 30,),
-            //backgroundColor: Colors.red,
-            label: 'Guardar modificaciones evento',    
-            onTap: (){
-              
             }  
           ),
           SpeedDialChild(
@@ -200,6 +194,7 @@ class _EventoForm extends StatelessWidget {
   }) : super(key: key);
 
   late Lugar lugar;
+  final eventoDAO = EventoDAO(); 
   late Tipo tipo = Tipo(estado: true, nombre: '', tipo: 0);
   
   @override
@@ -208,6 +203,7 @@ class _EventoForm extends StatelessWidget {
     final evento = eventoForm.evento;
     final lugarService = Provider.of<LugarService>(context);
     final tipoService = Provider.of<TipoService>(context);
+    final eventoService = Provider.of<EventoService>(context);
     
     // Parte de listado de lugares
     if(lugarService.isLoading) return LoadingPage();
@@ -250,6 +246,37 @@ class _EventoForm extends StatelessWidget {
     }
     var vistaListDia = evento.dias;
     late List<int> listaDesplegableDiasCont = [31,28,31,30,31,30,31,31,30,31,30,31];
+
+    var vistaListAperSplit = evento.apertura.split(':');
+    var vistaListIniSplit = evento.inicio.split(':');
+    List<String> listaDesplegableMinAper = [];
+    List<String> listaDesplegableMinIni = [];
+    for(int i=0;i<=59;i++){
+      if(i >= 0 && i <= 9){
+        listaDesplegableMinAper.add('0${i}');
+        listaDesplegableMinIni.add('0${i}');
+      }else{
+        listaDesplegableMinAper.add('${i}');
+        listaDesplegableMinIni.add('${i}');
+      }
+    }
+    var vistaListMinAper = vistaListAperSplit[1];
+    var vistaListMinIni = vistaListIniSplit[1];
+
+    List<String> listaDesplegableHorAper = [];
+    List<String> listaDesplegableHorIni = [];
+    for(int i=0;i<=23;i++){
+      if(i >= 0 && i <= 9){
+        listaDesplegableHorAper.add('0${i}');
+        listaDesplegableHorIni.add('0${i}');
+      }
+      else{
+        listaDesplegableHorAper.add('${i}');
+        listaDesplegableHorIni.add('${i}');
+      }
+    }
+    var vistaListHorAper = vistaListAperSplit[0];
+    var vistaListHorIni = vistaListIniSplit[0];
 
     return Padding(
       padding: EdgeInsets.only(left: 10,right: 10,bottom: 10),
@@ -336,47 +363,60 @@ class _EventoForm extends StatelessWidget {
                   labelText: 'Valor boleta',
                 ),
               ),
-              SizedBox(height: 30,),
-              Wrap(
+              SizedBox(height: 20,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    child: TextFormField(
-                      initialValue: '${evento.apertura}',
-                      onChanged: ( value ) => evento.apertura = value,
-                      keyboardType: TextInputType.text, // Deja solo teclado numerico 
-                      style: const TextStyle(fontSize: 18,color: Colors.white,),
-                      textAlign: TextAlign.center,
-                      cursorColor: Colors.white,
-                      decoration: InputDecorations.authInputDecorationGeneral(
-                        hintText: '00:00',
-                        labelText: 'Hora de apertura',
+                  Padding(
+                    padding: const EdgeInsets.only(right: 0.0),
+                    child: Container(
+                      margin: EdgeInsets.all(0),
+                      padding: EdgeInsets.only(right: 10,left: 10,bottom: 5.0,top: 3.0),
+                      alignment: Alignment.center, 
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.05),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        border: Border.all(
+                          color: Colors.white,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.white.withOpacity(0.0),
+                            offset: const Offset(0,0),
+                            blurRadius: 2,
+                          ),
+                        ],
                       ),
-                      validator: ( value ) {
-                        if(value == null || value.length < 1){
-                          return 'La hora de apertura es obligatoria';
-                        }
-                      }, 
+                      child: ChangeNotifierProvider(
+                        create: (_) {},
+                        child: _ListaDesplegableAper(evento,listaDesplegableHorAper,vistaListHorAper,listaDesplegableMinIni,vistaListMinAper),
+                      ),
                     ),
                   ),
-                  SizedBox(width: MediaQuery.of(context).size.width * 0.04,),
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    child: TextFormField(
-                      initialValue: '${evento.inicio}',
-                      onChanged: ( value ) => evento.inicio = value,
-                      keyboardType: TextInputType.text, // Deja solo teclado numerico 
-                      style: const TextStyle(fontSize: 18,color: Colors.white,),
-                      textAlign: TextAlign.center,
-                      decoration: InputDecorations.authInputDecorationGeneral(
-                        hintText: '00:00',
-                        labelText: 'Hora de inicio',
+                  Padding(
+                    padding: const EdgeInsets.only(right: 0.0),
+                    child: Container(
+                      margin: EdgeInsets.all(0),
+                      padding: EdgeInsets.only(right: 10,left: 10,bottom: 5.0,top: 3.0),
+                      alignment: Alignment.center, 
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.05),
+                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        border: Border.all(
+                          color: Colors.white,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.white.withOpacity(0.0),
+                            offset: const Offset(0,0),
+                            blurRadius: 2,
+                          ),
+                        ],
                       ),
-                      validator: ( value ) {
-                        if(value == null || value.length < 1){
-                          return 'La hora de apertura es obligatoria';
-                        }
-                      }, 
+                      child: ChangeNotifierProvider(
+                        create: (_) {},
+                        child: _ListaDesplegableIni(evento,listaDesplegableHorIni,vistaListHorIni,listaDesplegableMinIni,vistaListMinIni),
+                      ),
                     ),
                   ),
                 ],
@@ -434,12 +474,79 @@ class _EventoForm extends StatelessWidget {
                 activeColor: Colors.white, 
                 onChanged: eventoForm.updateEstado,
               ),*/
+              SizedBox(height: 20,),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 10),
+                width: double.infinity,
+                child: MaterialButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20)
+                  ),
+                  disabledColor: Colors.white,
+                  elevation: 10,
+                  color: Colors.white,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10),
+                    child: Text(
+                      'Guardar cambios',
+                      style: TextStyle(fontSize: 20,color: Colors.black,),              
+                    ),
+                  ),
+                  onPressed: (){
+                    var aper = evento.apertura.split(':');
+                    var ini = evento.inicio.split(':');  
+                    if(evento.nombre.length < 1 || evento.nombre == null){
+                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un nombre del evento'));
+                    }else if(evento.lugar < 1 || evento.lugar == null){
+                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un codigo de lugar.\nRevise el icono de información al lado derecho del campo.'));
+                    }else if(evento.tipo < 1 || evento.tipo == null){
+                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca un codigo de tipo.\nRevise el icono de información al lado derecho del campo.'));
+                    }else if(int.parse(aper[0]) > int.parse(ini[0])){
+                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nLa hora de apertura no puede ser posterior a la de inicio'));
+                    }else if(int.parse(aper[0]) == int.parse(ini[0])){
+                      if(int.parse(aper[1]) >= int.parse(ini[1])){
+                        ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nEl minuto de apertura no puede ser posterior o igual al de inicio'));
+                      }else{ 
+                        _modificarEvento(evento);
+                        eventoService.actualizar();
+                        Navigator.pushNamed(context, 'principal');
+                      }
+                    }else if(evento.descripcion.length < 1 || evento.descripcion == null){
+                      ScaffoldMessenger.of(context).showSnackBar(_Error('ERROR\nPor favor introduzca una descripcion del evento'));
+                    }else{ 
+                      _modificarEvento(evento);
+                      eventoService.actualizar();
+                      Navigator.pushNamed(context, 'principal');
+                    }
+                  },
+                ),
+              ),
               SizedBox(height: 30,),
             ],
           )
         ),
       ),
     );
+  }
+
+  void _modificarEvento(Evento evento) {
+    eventoDAO.modificarTodoEvento(evento.id!,evento);
+  }
+
+  SnackBar _Error(fraseo){    
+    final snackBar = SnackBar(
+        backgroundColor: Colors.white,
+        content: Text(
+          fraseo,
+          style: TextStyle(fontSize: 15,color: Colors.black),
+        ),
+        action: SnackBarAction(
+          label: 'Ocultar',
+          textColor: Colors.red,
+          onPressed: () {},
+        ),
+      );
+    return snackBar;
   }
 
   BoxDecoration _buildBoxDecoration() => BoxDecoration(
@@ -799,6 +906,236 @@ class _ListaDesplegableMesForm extends State<_ListaDesplegableMes> {
                     setState(() {}),
                     },
                   value: vistaListAnual,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ListaDesplegableAper extends StatefulWidget{
+  
+  _ListaDesplegableAper(
+    this.evento,
+    this.listaDesplegableHor,
+    this.vistaListHor,
+    this.listaDesplegableMin,
+    this.vistaListMin,
+  );
+
+  late Evento evento;
+  late List<String> listaDesplegableHor = [];
+  late var vistaListHor = '';
+  late List<String> listaDesplegableMin = [];
+  late var vistaListMin = '';
+  
+  @override
+  _ListaDesplegableAperForm createState() => _ListaDesplegableAperForm(evento,listaDesplegableHor,vistaListHor,listaDesplegableMin,vistaListMin);
+}
+
+class _ListaDesplegableAperForm extends State<_ListaDesplegableAper> {
+  
+  _ListaDesplegableAperForm(
+    this.evento,
+    this.listaDesplegableHor,
+    this.vistaListHor,
+    this.listaDesplegableMin,
+    this.vistaListMin,
+  );
+  
+  late Evento evento;
+  late List<String> listaDesplegableHor = [];
+  late var vistaListHor;
+  late List<String> listaDesplegableMin = [];
+  late var vistaListMin;
+
+  @override
+  Widget build(BuildContext context) {
+    evento.apertura = '${vistaListHor}:${vistaListMin}';
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 10),
+      child:  Column(
+        children: [
+          SizedBox(height: 10,),
+          Text(
+            'Hora apertura',
+            style: const TextStyle(fontSize: 18,color: Colors.white,fontWeight: FontWeight.bold,),
+          ),
+          SizedBox(height: 5,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 0.0,left: 0.0),
+                child: DropdownButton<String>(
+                  alignment: Alignment.center,
+                  icon: Icon(Icons.arrow_drop_down,color: Colors.white,),
+                  dropdownColor: Colors.grey.withOpacity(0.8),
+                  items: listaDesplegableHor.map<DropdownMenuItem<String>>((String value14){
+                    return DropdownMenuItem<String>( 
+                      alignment: Alignment.center,
+                      value: value14,
+                      child: Text(
+                        value14,
+                        style: TextStyle(fontSize: 16,color: Colors.white,fontWeight: FontWeight.bold),
+                      ), 
+                    ); 
+                  }).toList(),
+                
+                  onChanged: (value14) => {
+                    vistaListHor = value14,
+                    setState(() {}),
+                    },
+                  value: vistaListHor,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 0.0),
+                child: Text(
+                  ':',
+                  style: const TextStyle(fontSize: 25,color: Colors.white,fontWeight: FontWeight.bold,),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: DropdownButton<String>(
+                  alignment: Alignment.center,
+                  icon: Icon(Icons.arrow_drop_down,color: Colors.white,),
+                  dropdownColor: Colors.grey.withOpacity(0.8),
+                  items: listaDesplegableMin.map<DropdownMenuItem<String>>((String value6){
+                    return DropdownMenuItem<String>( 
+                      alignment: Alignment.center,
+                      value: value6,
+                      child: Text(
+                        value6,
+                        style: TextStyle(fontSize: 16,color: Colors.white,fontWeight: FontWeight.bold),
+                      ), 
+                    ); 
+                  }).toList(),
+                
+                  onChanged: (value6) => {
+                    vistaListMin = value6,
+                    setState(() {}),
+                    },
+                  value: vistaListMin,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ListaDesplegableIni extends StatefulWidget{
+  
+  _ListaDesplegableIni(
+    this.evento,
+    this.listaDesplegableHor,
+    this.vistaListHor,
+    this.listaDesplegableMin,
+    this.vistaListMin,
+  );
+
+  late Evento evento;
+  late List<String> listaDesplegableHor = [];
+  late var vistaListHor = '';
+  late List<String> listaDesplegableMin = [];
+  late var vistaListMin = '';
+  
+  @override
+  _ListaDesplegableIniForm createState() => _ListaDesplegableIniForm(evento,listaDesplegableHor,vistaListHor,listaDesplegableMin,vistaListMin);
+}
+
+class _ListaDesplegableIniForm extends State<_ListaDesplegableIni> {
+  
+  _ListaDesplegableIniForm(
+    this.evento,
+    this.listaDesplegableHor,
+    this.vistaListHor,
+    this.listaDesplegableMin,
+    this.vistaListMin,
+  );
+  
+  late Evento evento;
+  late List<String> listaDesplegableHor = [];
+  late var vistaListHor;
+  late List<String> listaDesplegableMin = [];
+  late var vistaListMin;
+
+  @override
+  Widget build(BuildContext context) {
+    evento.inicio = '${vistaListHor}:${vistaListMin}';
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20),
+      child:  Column(
+        children: [
+          SizedBox(height: 10,),
+          Text(
+            'Hora inicio',
+            style: const TextStyle(fontSize: 18,color: Colors.white,fontWeight: FontWeight.bold,),
+          ),
+          SizedBox(height: 5,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 0.0,left: 0.0),
+                child: DropdownButton<String>(
+                  alignment: Alignment.center,
+                  icon: Icon(Icons.arrow_drop_down,color: Colors.white,),
+                  dropdownColor: Colors.grey.withOpacity(0.8),
+                  items: listaDesplegableHor.map<DropdownMenuItem<String>>((String value15){
+                    return DropdownMenuItem<String>( 
+                      alignment: Alignment.center,
+                      value: value15,
+                      child: Text(
+                        value15,
+                        style: TextStyle(fontSize: 16,color: Colors.white,fontWeight: FontWeight.bold),
+                      ), 
+                    ); 
+                  }).toList(),
+                
+                  onChanged: (value15) => {
+                    vistaListHor = value15,
+                    setState(() {}),
+                    },
+                  value: vistaListHor,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 0.0),
+                child: Text(
+                  ':',
+                  style: const TextStyle(fontSize: 25,color: Colors.white,fontWeight: FontWeight.bold,),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: DropdownButton<String>(
+                  alignment: Alignment.center,
+                  icon: Icon(Icons.arrow_drop_down,color: Colors.white,),
+                  dropdownColor: Colors.grey.withOpacity(0.8),
+                  items: listaDesplegableMin.map<DropdownMenuItem<String>>((String value9){
+                    return DropdownMenuItem<String>( 
+                      alignment: Alignment.center,
+                      value: value9,
+                      child: Text(
+                        value9,
+                        style: TextStyle(fontSize: 16,color: Colors.white,fontWeight: FontWeight.bold),
+                      ), 
+                    ); 
+                  }).toList(),
+                
+                  onChanged: (value9) => {
+                    vistaListMin = value9,
+                    setState(() {}),
+                    },
+                  value: vistaListMin,
                 ),
               ),
             ],

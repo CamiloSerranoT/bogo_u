@@ -77,14 +77,6 @@ class _EventoPageBody extends StatelessWidget {
                     icon: Icon(Icons.arrow_back_ios_new, size: 40, color: Colors.white),
                   )
                 ),
-                Positioned(
-                  top: 40,
-                  right: 20,
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.camera_alt_outlined, size: 40, color: Colors.white),
-                  )
-                )
               ],  
             ),
             _EventoForm(),
